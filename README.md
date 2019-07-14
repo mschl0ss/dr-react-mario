@@ -53,8 +53,21 @@ learn a new technology and implement it in a non-traditional way.
 ## Group Members and Work Breakdown
 **Rushil Vig, Robert Hubert, Chaitanya Desai, Marc Schlossberg**
 
-##### Things Accomplished Over the Weekend
+### Saturday, July 13
+* Proof of concept: React box drop - **Rushil**
+* Proof of concept: Socket.io connection - **Robert**
+* CSS Grid styles for game board - **Chaitanya**
+* MongoDB/Express backend with Game and nested Player schema - **Marc**
+
+### Sunday, July 14
+* Integrating design and render logic - **Rushil, Chaitanya**
+* Socket.io: Simultaneous rendering - **Robert**
+* Project Proposal, sudo-code game logic, website - **Marc**
+
+### Monday, July 15
 
 
+### Tuesday, July 16
 
-## Proposal must have a day-by-day breakdown for each individual. See sample proposal for clarification.
+
+### Wednesday, July 17
