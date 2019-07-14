@@ -8,7 +8,6 @@ const app = express();
 
 // routes
 const users = require("./routes/api/users");
-const tweets = require("./routes/api/tweets");
 const games = require("./routes/api/games");
 
 //import passport for login auth
@@ -30,7 +29,6 @@ app.use(bodyParser.json());
 //information on our page.
 
 app.use("/api/users", users);
-app.use("/api/tweets", tweets);
 app.use("/api/games", games);
 
 

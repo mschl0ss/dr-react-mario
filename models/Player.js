@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 //By convention, model files in Mongoose are singular and start with a capital letter
 const PlayerSchema = new Schema({
-    handle: {
+    name: {
         type: String,
         required: true
     },
@@ -14,4 +14,5 @@ const PlayerSchema = new Schema({
 
 
 // Let's not forget to export our model:
-module.exports = Player = mongoose.model('players', PlayerSchema);
+module.exports = Player = PlayerSchema;
+// module.exports = Player = mongoose.model('players', PlayerSchema);
