@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
-//By convention, model files in Mongoose are singular and start with a capital letter
 const PlayerSchema = new Schema({
     name: {
         type: String,
@@ -15,4 +13,3 @@ const PlayerSchema = new Schema({
 
 // Let's not forget to export our model:
 module.exports = Player = PlayerSchema;
-// module.exports = Player = mongoose.model('players', PlayerSchema);

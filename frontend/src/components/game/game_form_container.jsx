@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import Main from './main';
-import { fetchGame, createGame, joinGame, clearGame, clearGameErrors } from '../../actions/game_actions';
+import GameForm from './game_form';
+import { fetchGame, createGame, joinGame, clearGames, clearGamesErrors } from '../../actions/game_actions';
 
 const msp = state => {
     return ({
@@ -13,8 +13,8 @@ const mdp = dispatch => ({
     fetchGame: name => dispatch(fetchGame(name)),
     createGame: (name,player) => dispatch(createGame(name,player)),
     joinGame: (name,player) => dispatch(joinGame(name,player)),
-    clearGame: () => dispatch(clearGame()),
-    clearGameErrors: () => dispatch(clearGameErrors())
+    clearGames: () => dispatch(clearGames()),
+    clearGamesErrors: () => dispatch(clearGamesErrors())
 });
 
-export default connect(msp,mdp)(Main);
+export default connect(msp,mdp)(GameForm);

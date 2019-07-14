@@ -1,6 +1,6 @@
 import React from 'react';
 
-class MainPage extends React.Component {
+class GameForm extends React.Component {
 
     constructor(props) {
         super(props);
@@ -31,9 +31,12 @@ class MainPage extends React.Component {
         this.handleGetSubmit = this.handleGetSubmit.bind(this);
         this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
         this.handleJoinSubmit = this.handleJoinSubmit.bind(this);
-        this.clearGame = this.clearGame.bind(this);
+        this.clearGames = this.clearGames.bind(this);
     }
 
+    componentDidMount() {
+        this.props.clearGames();
+    }
     componentDidUpdate(prevProps) {
         if(prevProps.game !== this.props.game) {
             this.setState({game: this.props.game});
@@ -61,8 +64,8 @@ class MainPage extends React.Component {
         this.clearInputs();
     }
 
-    clearGame() {
-        this.props.clearGame();
+    clearGames() {
+        this.props.clearGames();
         this.clearInputs();
     }
 
@@ -73,7 +76,7 @@ class MainPage extends React.Component {
         this.setState({createGame: createGame})
         this.setState({getGame: getGame})
         this.setState({joinGame: joinGame})
-        this.props.clearGameErrors();
+        this.props.clearGamesErrors();
         
 
     }
@@ -128,7 +131,7 @@ class MainPage extends React.Component {
                 <div>Players:{players}</div>
                 <p>Sample Seed Values: {seedValues}</p>
 
-                <button onClick={this.clearGame}>Clear Game</button>
+                <button onClick={this.clearGames}>Clear Game</button>
                 
                 <ul style={errorStyle}>
                     {errors}
@@ -177,4 +180,4 @@ class MainPage extends React.Component {
     }
 }
 
-export default MainPage;
+export default GameForm;

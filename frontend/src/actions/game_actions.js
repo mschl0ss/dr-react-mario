@@ -1,17 +1,18 @@
 import * as gameUtil from '../utils/game_util';
 
 export const RECEIVE_GAME = 'RECEIVE_GAME';
-export const CLEAR_GAME = 'CLEAR_GAME';
+export const RECEIVE_GAMES = 'RECEIVE_GAMES';
+export const CLEAR_GAMES = 'CLEAR_GAMES';
 export const RECEIVE_GAME_ERRORS = 'RECEIVE_GAME_ERRORS';
-export const CLEAR_GAME_ERRORS = 'CLEAR_GAME_ERRORS';
+export const CLEAR_GAMES_ERRORS = 'CLEAR_GAMES_ERRORS';
 
 export const receiveGame = game => ({
     type: RECEIVE_GAME,
     game
 })
 
-export const clearGame = () => ({
-    type: CLEAR_GAME
+export const clearGames = () => ({
+    type: CLEAR_GAMES
 })
 
 export const receiveGameErrors = errors => ({
@@ -19,8 +20,8 @@ export const receiveGameErrors = errors => ({
     errors
 })
 
-export const clearGameErrors = () => ({
-    type: CLEAR_GAME_ERRORS
+export const clearGamesErrors = () => ({
+    type: CLEAR_GAMES_ERRORS
 })
 
 export const fetchGame = name => dispatch => (
@@ -28,6 +29,12 @@ export const fetchGame = name => dispatch => (
         .then(game => dispatch(receiveGame(game)),
         err => (dispatch(receiveGameErrors(err.response.data))))
         
+)
+
+export const fetchGames = () => dispatch => (
+    gameUtil.getGames()
+        .then(game => dispatch(receiveGame(game)),
+            err => (dispatch(receiveGameErrors(err.response.data))))
 )
 
 export const createGame = (name, player) => dispatch => (

@@ -1,12 +1,13 @@
 import React from 'react';
-// import { AuthRoute, ProtectedRoute } from '../util/route_util';
 import { Route, Switch } from 'react-router-dom';
 
-import MainPage from './main/main_container';
+import GameFormContainer from './game/game_form_container';
+import GameIndexContainer from './game/game_index_container';
 
 const App = () => (
     <Switch>
-        <Route exact path="/" component={MainPage} />
+        <Route exact path="/games/form" component={GameFormContainer} />
+        <Route exact path="/games/" component={GameIndexContainer} />
     </Switch>
 );
 

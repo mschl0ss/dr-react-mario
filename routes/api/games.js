@@ -5,6 +5,20 @@ const Game = require('../../models/Game');
 const Prando = require('prando');
 
 
+router.get('/all', (req,res) => {
+    Game.find().then(games=>{
+        const theGames = games.map(game => {
+            let rng = new Prando(game.id);
+            const seedValues = [];
+            for (let i = 0; i < 10; i++) seedValues.push(rng.nextInt(0, 10));
+            
+            return {name: game.name, _id: game.id, players: game.players, seedValues}
+        })
+        res.json({
+            games: theGames
+        })
+    })
+})
 router.get('/', (req, res) => {
     Game.findOne({name: req.query.name})
     .then(game => {
@@ -70,9 +84,14 @@ router.patch('/', (req,res) => {
                 })
             .catch(err => res.status(418).json({ joinGame: err.message }));
             } else {
-                return res.status(418).json({ fetchGame: "No game with that name" })
+                return res.status(418).json({ fetchGame: "Game not found" })
             }
         })
+})
+
+router.delete('/', (req,res) => {
+
+
 })
 
 module.exports = router;

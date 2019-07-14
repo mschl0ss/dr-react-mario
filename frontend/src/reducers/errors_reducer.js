@@ -1,4 +1,4 @@
-import { RECEIVE_GAME_ERRORS, CLEAR_GAME_ERRORS } from '../actions/game_actions';
+import { RECEIVE_GAME_ERRORS, CLEAR_GAMES_ERRORS } from '../actions/game_actions';
 
 export default function (state = {}, action) {
     Object.freeze(state);
@@ -6,7 +6,7 @@ export default function (state = {}, action) {
     switch (action.type) {
         case RECEIVE_GAME_ERRORS:
             return action.errors;
-        case CLEAR_GAME_ERRORS:
+        case CLEAR_GAMES_ERRORS:
             return {};
         default:
             return state;

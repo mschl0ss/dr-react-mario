@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-// import Player from './Player';
 const Player = require('./Player');
 
 function twoPlayerLimit(players) {
@@ -21,6 +20,4 @@ const GameSchema = new Schema({
 
 })
 
-// Let's not forget to export our model:
 module.exports = Game = mongoose.model('games', GameSchema);
-// module.exports = Player = mongoose.model('players', PlayerSchema);
