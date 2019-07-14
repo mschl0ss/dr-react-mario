@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import Main from './main';
-import { fetchGame, createGame, joinGame } from '../../actions/game_actions';
+import { fetchGame, createGame, joinGame, clearGame, clearGameErrors } from '../../actions/game_actions';
 
 const msp = state => {
-    // console.log(state);
     return ({
         game: state.game,
-        id: state.game.id,
+        errors: Object.values(state.errors)
     })
 };
 
@@ -14,6 +13,8 @@ const mdp = dispatch => ({
     fetchGame: name => dispatch(fetchGame(name)),
     createGame: (name,player) => dispatch(createGame(name,player)),
     joinGame: (name,player) => dispatch(joinGame(name,player)),
+    clearGame: () => dispatch(clearGame()),
+    clearGameErrors: () => dispatch(clearGameErrors())
 });
 
 export default connect(msp,mdp)(Main);

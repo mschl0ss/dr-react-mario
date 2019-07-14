@@ -13,7 +13,6 @@ const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
 
 router.get("/", (req, res) => {
-    debugger;
     res.json({ msg: "This is the users route" })
 });
 
