@@ -9,6 +9,7 @@ const app = express();
 // routes
 const users = require("./routes/api/users");
 const tweets = require("./routes/api/tweets");
+const games = require("./routes/api/games");
 
 //import passport for login auth
 const passport = require('passport');
@@ -30,6 +31,7 @@ app.use(bodyParser.json());
 
 app.use("/api/users", users);
 app.use("/api/tweets", tweets);
+app.use("/api/games", games);
 
 
 //Before we can run the server, we need to tell our app which port to run on. 
