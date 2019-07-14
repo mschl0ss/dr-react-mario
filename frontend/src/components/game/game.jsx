@@ -15,7 +15,7 @@ class Game extends React.Component {
             pillFalling: false,
             curPill1X: 3,
             curPill1Y: 0,
-            curPull1C: 1,
+            curPill1C: 1,
             curPill2X: 4,
             curPill2Y: 0,
             curPill2C: 2,
@@ -27,7 +27,6 @@ class Game extends React.Component {
     }
 
     componentDidMount() {
-        
         setInterval(() => this.computeGame(), 500);
     }
 
@@ -35,13 +34,12 @@ class Game extends React.Component {
     computeGame() {
         //Generate empty board
         let board = [];
-        for(let i =0; i < 20; i++){
+        for (let i =0; i < 20; i++){
             let row = [];
-            for(let j = 0; j< 8; j++) {
+            for (let j = 0; j< 8; j++) {
                 row.push(0)
             }
-            board.push(
-                row)
+            board.push(row)
         }
 
         //update current pill position
@@ -74,10 +72,13 @@ class Game extends React.Component {
  
          }
 
-         //if pill hit the bottom of the board
-         if(this.state.curPill1Y ===19 || this.state.curPill2Y ===19 ){
+         // if pill hit the bottom of the board
+         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 ){
              let pills = this.state.pills;
-             pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPull1C})
+
+             //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
+
+             pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
              pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
              this.setState({
                  pillFalling: false,
@@ -89,7 +90,7 @@ class Game extends React.Component {
 
 
          //update board position for all pills
-         for(let i = 0; i < this.state.pills.length; i++) {
+         for (let i = 0; i < this.state.pills.length; i++) {
             let pill = this.state.pills[i];
             board[pill.y][pill.x] = pill.color;
          }
@@ -112,14 +113,15 @@ class Game extends React.Component {
             let pill = state.pills[i];
             if((state.curPill1X === pill.x && state.curPill1Y+1 === pill.y) ||
             (state.curPill2X === pill.x && state.curPill2Y+1 === pill.y) ||
-            state.curPill1Y ===15 ||
-            state.curPill2Y ===15) {
+            state.curPill1Y ===19 ||
+            state.curPill2Y ===19) {
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPull1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
+                
                 this.setState({
                     pills: pills,
-                    pillFalling: pillFalling
+                    pillFalling: pillFalling //? you mean pillFalling: false
                 })  
                 return;
              
@@ -170,43 +172,40 @@ class Game extends React.Component {
                         curPill2Y: this.state.curPill2Y -1,
                         orientation: 0
                     })
-              
+                } 
+            }     
+        }
+    }
+
+
+    renderSquares() {
+            for (let i = 0; i < 20; i++) {
+                let row = [];
+            for (let j = 0; j < 8; j++) {
+                if (this.state.board[i][j] === 1) {
+                    row.push(<img className="pixel" src="b-pill.png" alt="" />)
+                }
+                if (this.state.board[i][j] === 2) {
+                    row.push(<img className="pixel" src="y-pill.png" alt="" />)
+                }
+            }
         }
     }
 
 
     render() {
-        if(this.state.board === 0) {
-            return <div></div>
+
+        if (this.state.board === 0) {
+            return 
         }
-        
-        
-        let boardRender = [];
-        for(let i =0; i < 20; i++){
-            let row = [];
-            for(let j = 0; j< 8; j++) {
-                if(this.state.board[i][j] === 0) {
-                    row.push(<div className="cell"></div>)
-                }
-                if(this.state.board[i][j] === 1) {
-                    row.push(<div className="cell cell-pill-red"></div>)
-                }
-                if(this.state.board[i][j] === 2) {
-                    row.push(<div className="cell cell-pill-blue"></div>)
-                }
-            }
-            boardRender.push(<div className="board-row">{row}</div>
-            )
-        }
-        
-        
-        
-        return(
-            <div onKeyDown={ this.handleKeyPress} tabIndex="0">
-            {boardRender}
+    
+        return (
+            <div id="content">
+                <div  onKeyDown= {this.handleKeyPress} tabIndex = "0" className="main-grid">
+                    {this.renderSquares()}
+                </div>
             </div>
-            
-        )
+        )  
     }
 }
 
