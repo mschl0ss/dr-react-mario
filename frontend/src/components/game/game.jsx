@@ -1,6 +1,13 @@
 import React from 'react';
 import Cell from './cell'
 
+// Pill structure:
+// {
+//     x: x postiion,
+//     y: y postiion,
+//     color: pill color
+// }
+
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +31,9 @@ class Game extends React.Component {
         setInterval(() => this.computeGame(), 500);
     }
 
+
     computeGame() {
+        //Generate empty board
         let board = [];
         for(let i =0; i < 20; i++){
             let row = [];
@@ -34,7 +43,10 @@ class Game extends React.Component {
             board.push(
                 row)
         }
+
+        //update current pill position
         if(this.state.pillFalling === false) {
+            //if there is no pill falling, set new piil
             board[this.state.curPill1Y][this.state.curPill1X] = 1;
             board[this.state.curPill2Y][this.state.curPill2X] = 2;
             
@@ -48,6 +60,7 @@ class Game extends React.Component {
             });
  
          } else {
+             //if pill is falling, update it's position
              this.setState ({
                  curPill1X: this.state.curPill1X,
                  curPill1Y: this.state.curPill1Y+1,
@@ -61,7 +74,8 @@ class Game extends React.Component {
  
          }
 
-         if(this.state.curPill1Y ===15 || this.state.curPill2Y ===15 ){
+         //if pill hit the bottom of the board
+         if(this.state.curPill1Y ===19 || this.state.curPill2Y ===19 ){
              let pills = this.state.pills;
              pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPull1C})
              pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
@@ -74,7 +88,7 @@ class Game extends React.Component {
          }
 
 
-
+         //update board position for all pills
          for(let i = 0; i < this.state.pills.length; i++) {
             let pill = this.state.pills[i];
             board[pill.y][pill.x] = pill.color;
@@ -90,6 +104,7 @@ class Game extends React.Component {
  
     }
 
+    //check for pills colliding with pills
     checkCollisionWithPills(state) {
         let pills = this.state.pills;
         let pillFalling = true; 
@@ -115,17 +130,20 @@ class Game extends React.Component {
 
     handleKeyPress(e) {
         if(this.state.pillFalling){
+            //move pill to left
             if(e.keyCode === 37){
                 this.setState({
                     curPill2X: this.state.curPill2X -1,
                     curPill1X: this.state.curPill1X -1,
                 })
+            //move pill to right
             } else if (e.keyCode === 39) {
                 this.setState({
                     curPill2X: this.state.curPill2X +1,
                     curPill1X: this.state.curPill1X +1,
                 })
             }
+            //when z is pressed rotate the pill
             else if (e.keyCode === 90) {
                 //left rotate
                 if(this.state.orientation === 0) {
@@ -164,7 +182,7 @@ class Game extends React.Component {
         
         
         let boardRender = [];
-        for(let i =0; i < 16; i++){
+        for(let i =0; i < 20; i++){
             let row = [];
             for(let j = 0; j< 8; j++) {
                 if(this.state.board[i][j] === 0) {
