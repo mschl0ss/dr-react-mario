@@ -106,8 +106,14 @@ class GameForm extends React.Component {
 
     render() {
 
+        const pListStyle = {
+            listStyle: 'none', borderTop: 'solid 1px black', borderBottom: 'solid 1px black',
+            margin: '20px 0', padding: '20px 0 20px 20px', width: '300px'
+        }
+        const gListStyle = { listStyle: 'none', marginBottom: '30px', paddingBottom: '20px', borderBottom: 'solid 3px black' }
+
         const players = this.state.game.players.map((player,i) => (
-            <ul key={i}>
+            <ul key={i} style={pListStyle}>
                 <li key={player.name}>Player Name: {player.name}</li>
                 <li key={player.id}>Player ID: {player._id}</li>
             </ul>
@@ -115,7 +121,7 @@ class GameForm extends React.Component {
 
         const seedValues = this.state.game.seedValues.map((value,i) => {
             let string = value.toString();
-            if (i!==this.length-1) string += ", ";
+            if (i !== this.state.game.seedValues.length-1) string += ", ";
             return string;
         })
 
@@ -125,11 +131,12 @@ class GameForm extends React.Component {
         const errorStyle = {color: 'red', height: '20px'}
         return (
             <div>
-                <h1>Game</h1>
-                <p>Game Name: {this.state.game.name}</p>
-                <p>Game ID:{this.state.game.id}</p>
-                <div>Players:{players}</div>
-                <p>Sample Seed Values: {seedValues}</p>
+                <ul style={gListStyle}>
+                    <li><h3>Game Name: {this.state.game.name}</h3></li>
+                    <li><h4>Game ID:{this.state.game.id}</h4></li>
+                    <li>Players:{players}</li>
+                    <li><p>Sample Seed Values: {seedValues}</p></li>
+                </ul>
 
                 <button onClick={this.clearGames}>Clear Game</button>
                 
