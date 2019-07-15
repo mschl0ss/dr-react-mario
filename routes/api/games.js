@@ -25,32 +25,40 @@ function shuffle(a) {
     return a;
 }
 function generateInitialState(virusLevel) {
+
+    //set up the basics.  we've just decided that total viruses === lvl * 3
     const colors = ['red', 'yellow', 'blue']
     const totalCount = 160;
-
-
-    const virusSquares = [];
     const virusCount = virusLevel * 3;
+
+
+    //lets make an array and and push ${virusCount} 'viruses', which are just
+    //color strings
+    
+    const virusSquares = [];
     
     for(let i=0; i<virusCount; i++) {
         virusSquares.push(colors[Math.floor(Math.random() * 3)]);
     }
 
+    //now we need to fill the rest of the board with blank squares
     const blankSquares = [];
 
     for(let i=0; i<(totalCount-virusCount); i++) {
         blankSquares.push('blank');
     }
 
+    //now we combine and shuffle the blank and virus arrays
     const allSquares = virusSquares.concat(blankSquares);
     const shuffledSquares = shuffle(allSquares);
 
     const usedPicks = [];
     const board = [];
 
-    const usedPicks = [];
-    const board = [];
-    // debugger;
+    
+    //k cool `shuffledSquares` is an array of the exact length and population
+    //that we want for our board.  Now let's just loop around, create rows,
+    //and add those rows to the board
     for (let col = 0; col < 8; col++) {
         const thisRow = [];
         for (let row = 0; row < 20; row++) {
@@ -66,10 +74,10 @@ function generateInitialState(virusLevel) {
             usedPicks.push(pick);
             thisRow.push(shuffledSquares[pick]);
         }
-        // console.log(`pushing ${thisRow} into board: ${board}`)
         board.push(thisRow);
     }
-    // debugger;
+
+    // word.
     return board;
      
 }
@@ -137,7 +145,7 @@ router.post('/', (req,res) => {
         .catch(err => {
             // debugger;
             const outputErrors = [];
-            if(err.errors.name) outputErrors.push('please enter a game name');
+            // if(err.errors.name) outputErrors.push('please enter a game name');
             if(err.message.includes('player name is required')) outputErrors.push('player name is required');
             // res.status(418).json({ createGame: outputErrors })
             res.status(418).json({ createGame: err.message })
