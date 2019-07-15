@@ -1,5 +1,6 @@
 import React from 'react';
-// import Cell from './cell'
+import Cell from './cell'; 
+import Pill from './pill'; 
 
 // Pill structure:
 // {
@@ -8,18 +9,18 @@ import React from 'react';
 //     color: pill color,
 //     orientation: HR, HL, VU, VD 
 // }
-class Game extends React.Component {
+class Game2 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             pillFalling: false,
             curPill1X: 3,
             curPill1Y: 0,
-            curPill1C: 1,
+            curPill1C: 'blue',
             curPill10: 'HL',
             curPill2X: 4,
             curPill2Y: 0,
-            curPill2C: 2,
+            curPill2C: 'red',
             curPill20: 'HR',
             orientation: 0,
             board: 0,
@@ -29,24 +30,26 @@ class Game extends React.Component {
     }
 
     componentDidMount() {
-        setInterval(() => this.computeGame(), 400);
+        setInterval(() => this.computeGame(), 700);
     }
 
     computeGame() {
         //Generate empty board
+
         let board = [];
         for (let i = 0; i < 20; i++) {
             let row = [];
             for (let j = 0; j < 8; j++) {
-                row.push(0)
+                row.push({})
             }
             board.push(row)
         }
+
         //update current pill position
         if (this.state.pillFalling === false) {
             //if there is no pill falling, set new piil
-            board[this.state.curPill1Y][this.state.curPill1X] = 1;
-            board[this.state.curPill2Y][this.state.curPill2X] = 2;
+            board[this.state.curPill1Y][this.state.curPill1X] = new Pill("blue", this.state.curPill1X, this.state.curPill1Y);
+            board[this.state.curPill2Y][this.state.curPill2X] = new Pill("red", this.state.curPill2X, this.state.curPill2Y);
 
             this.setState({
                 curPill1X: 3,
@@ -68,8 +71,8 @@ class Game extends React.Component {
                 curPill2Y: this.state.curPill2Y + 1
             });
 
-            board[this.state.curPill1Y][this.state.curPill1X] = 1;
-            board[this.state.curPill2Y][this.state.curPill2X] = 2;
+            board[this.state.curPill1Y][this.state.curPill1X] = new Pill("blue", this.state.curPill1X, this.state.curPill1Y);
+            board[this.state.curPill2Y][this.state.curPill2X] = new Pill("red", this.state.curPill2X, this.state.curPill2Y);
             this.checkCollisionWithPills(this.state);
 
         }
@@ -77,8 +80,8 @@ class Game extends React.Component {
         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19) {
             let pills = this.state.pills;
             //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
-            pills.push({ x: this.state.curPill1X, y: this.state.curPill1Y, color: this.state.curPill1C }) //? orientation: 'HR'
-            pills.push({ x: this.state.curPill2X, y: this.state.curPill2Y, color: this.state.curPill2C })
+            pills.push(new Pill("blue", this.state.curPill1X, this.state.curPill1Y)) //? orientation: 'HR'
+            pills.push(new Pill("red", this.state.curPill2X, this.state.curPill2Y))
 
             //TODO adapt code => pills.push({ pos: [this.state.curPill1X, this.state.curPill1Y], color: this.state.curPill1C })
             //TODO adapt code => pills.push({ pos: [this.state.curPill2X, this.state.curPill2Y], color: this.state.curPill2C })
@@ -94,8 +97,8 @@ class Game extends React.Component {
         //update board position for all pills
         for (let i = 0; i < this.state.pills.length; i++) {
             let pill = this.state.pills[i];
-            board[pill.y][pill.x] = pill.color;
-        }
+            board[pill.y][pill.x].color = pill.color;
+        }   
 
         this.setState({
             board: board
@@ -112,8 +115,8 @@ class Game extends React.Component {
                 (state.curPill2X === pill.x && state.curPill2Y + 1 === pill.y) ||
                 state.curPill1Y === 19 ||
                 state.curPill2Y === 19) {
-                pills.push({ x: this.state.curPill1X, y: this.state.curPill1Y, color: this.state.curPill1C })
-                pills.push({ x: this.state.curPill2X, y: this.state.curPill2Y, color: this.state.curPill2C })
+                pills.push( new Pill ("blue", this.state.curPill1X, this.state.curPill1Y) )
+                pills.push(new Pill("red", this.state.curPill2X, this.state.curPill2Y))
                 pillFalling = false;
 
                 this.setState({
@@ -129,13 +132,13 @@ class Game extends React.Component {
     handleKeyPress(e) {
         if (this.state.pillFalling) {
             //move pill to left
-            if (e.keyCode === 37 && this.state.curPill1X !== 0 && this.state.curPill2X !== 0 ) {
+            if (e.keyCode === 37 && this.state.curPill1X !== 0 && this.state.curPill2X !== 0) {
                 this.setState({
                     curPill2X: this.state.curPill2X - 1,
                     curPill1X: this.state.curPill1X - 1,
                 })
                 //move pill to right
-            } else if (e.keyCode === 39 && this.state.curPill1X !== 7 && this.state.curPill2X !== 7 ) {
+            } else if (e.keyCode === 39 && this.state.curPill1X !== 7 && this.state.curPill2X !== 7) {
                 this.setState({
                     curPill2X: this.state.curPill2X + 1,
                     curPill1X: this.state.curPill1X + 1,
@@ -177,7 +180,6 @@ class Game extends React.Component {
                         orientation: 0
                     })
                 }
-                // this.computeGame();
             }
         }
     }
@@ -192,7 +194,7 @@ class Game extends React.Component {
                 if (this.state.board[i][j] === 0) {
                     row.push(<div></div>)
                 }
-                if (this.state.board[i][j] === 1 ) {
+                if (this.state.board[i][j] === 1) {
                     row.push(<img className="pixel" src="b-left.png" alt="" />)
                 }
                 if (this.state.board[i][j] === 2) {
@@ -204,14 +206,14 @@ class Game extends React.Component {
     }
 
     renderSqrs() {
-        let rows = []; 
-        let board = this.state.board; 
-        let pillOrientation1 = this.state.curPill10; 
-        let pillOrientation2 = this.state.curPill20; 
+        let rows = [];
+        let board = this.state.board;
+        let pillOrientation1 = this.state.curPill10;
+        let pillOrientation2 = this.state.curPill20;
 
-        for (let row = 0; row < 20; row ++) {
-            for (let col = 0; col < 8; col ++) {
-                if (board[row][col] === 0 ) {
+        for (let row = 0; row < 20; row++) {
+            for (let col = 0; col < 8; col++) {
+                if (board[row][col] === 0) {
                     rows.push(<div></div>)
                 }
                 if (board[row][col] === 1 && pillOrientation1 === 'HL') { //* BLUE LEFT
@@ -239,9 +241,9 @@ class Game extends React.Component {
                     rows.push(<img className="pixel" src="y-down.png" alt="" />)
                 }
 
-            }   
+            }
         }
-        return rows; 
+        return rows;
     }
 
 
@@ -264,4 +266,4 @@ class Game extends React.Component {
 
     }
 }
-export default Game;
+export default Game2;
