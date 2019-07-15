@@ -1,0 +1,39 @@
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+
+}
+
+.game-container h3 {
+    margin-bottom: 56px;
+}
+
+/* img is 668 * 1546 natively */
+
+/* 800/1546 = 51.7% */
+/* 48.253557567% is cropping percent value */
+/* 24.126778784% on each side  */
+
+
+.game-board{
+   
+    /* padding: 0 20px; */
+    width: 560px;
+    /* height: 1000px; */
+
+}
+
+.game-board figure {
+    width: 560px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.game-board figure img{
+    display: block;
+    width: 100%;
+    margin: -24.126% 0;
+}

@@ -62,9 +62,12 @@ learn a new technology and implement it in a non-traditional way.
 ### Sunday, July 14
 * Integrating design and render logic - **Rushil, Chaitanya**
 * Socket.io: Simultaneous rendering - **Robert**
-* Project Proposal, sudo-code game logic, website - **Marc**
+* Project Proposal, website - **Marc**
 
 ### Monday, July 15
+* Get server running locally.  Work on render logic. - **Rushil, Chaitanya**
+* Continue working on Socket.io - **Robert**
+* sudo-code game logic, website, backend supplying data needed for render - **Marc**
 
 
 ### Tuesday, July 16

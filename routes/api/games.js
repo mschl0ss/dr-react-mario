@@ -5,7 +5,7 @@ const Game = require('../../models/Game');
 
 const Prando = require('prando');
 
-
+debugger;
 router.get('/all', (req,res) => {
     Game.find().then(games=>{
         const theGames = games.map(game => {
@@ -36,7 +36,7 @@ router.get('/', (req, res) => {
             })
         }
         else {
-            return res.status(418).json({ fetchGame: "Game not found" })
+            return res.status(418).json({ fetchGame: ["Game not found"] })
         }
 
     })
@@ -91,9 +91,9 @@ router.patch('/', (req,res) => {
                         seedValues: seedValues,
                     })
                 })
-            .catch(err => res.status(418).json({ joinGame: err.message }));
+            .catch(err => res.status(418).json({ joinGame: ["Two players max"] }));
             } else {
-                return res.status(418).json({ fetchGame: "Game not found" })
+                return res.status(418).json({ fetchGame: ["Game not found"] })
             }
         })
 })
