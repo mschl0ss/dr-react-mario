@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const PlayerSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: [true, 'player name is required']
     },
     won: Boolean,
     score: Number,

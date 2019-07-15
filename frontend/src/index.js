@@ -6,6 +6,7 @@ import Root from './components/root';
 
 // We set this up in the last section
 import configureStore from './store/store';
+import './index.css';
 
 // We will use this to parse the user's session token
 // import jwt_decode from 'jwt-decode';

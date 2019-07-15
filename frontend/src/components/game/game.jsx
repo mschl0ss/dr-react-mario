@@ -1,4 +1,6 @@
 import React from 'react';
+// import Cell from './cell'
+
 // Pill structure:
 // {
 //     x: x postiion,
