@@ -1,2 +1,10 @@
-@import './main/main.css';
 @import './reset.css';
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=DM+Sans|Fira+Sans|Inconsolata&display=swap');
+
+/* Local css */
+@import './main/main.css';
+@import './main/form-column.css';
+@import './main/game-container.css';
+@import './main/details-widget.css';
