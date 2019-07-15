@@ -1,5 +1,5 @@
 import React from 'react';
-import Cell from './cell'
+// import Cell from './cell'
 
 // Pill structure:
 // {
@@ -170,7 +170,8 @@ class Game extends React.Component {
                         curPill2Y: this.state.curPill2Y -1,
                         orientation: 0
                     })
-              
+                }
+            }
         }
     }
 

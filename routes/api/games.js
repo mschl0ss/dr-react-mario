@@ -62,7 +62,15 @@ router.post('/', (req,res) => {
                 seedValues: seedValues,
             })
         })
-        .catch(err => res.status(418).json({ createGame: err.message }));
+        .catch(err => {
+            // debugger;
+            const outputErrors = [];
+            if(err.errors.name) outputErrors.push('please enter a game name');
+            if(err.message.includes('player name is required')) outputErrors.push('player name is required');
+            res.status(418).json({ createGame: outputErrors })
+            // res.status(418).json({ createGame: err.message })
+            }
+        );
 })
 
 router.patch('/', (req,res) => {

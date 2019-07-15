@@ -116,7 +116,7 @@ class Board extends React.Component {
                 <ul key={i} style={ulStyle}>
                     
                     {row.map(square => (
-                        <li style={listStyle} key={square.id}>{square.type} {square.color}</li>
+                        <li style={liStyle} key={square.id}>{square.type} {square.color}</li>
                     ))}
                 </ul>
             )
