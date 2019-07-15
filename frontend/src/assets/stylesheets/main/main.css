@@ -31,14 +31,9 @@ body {
 }
 
 .main-wrapper header {
-    /* border: solid 1px lightgrey; */
     height: 200px;
     position: relative;
-    /* background-position: 0px 0px, 10px 10px;
-    background-size: 20px 20px;
-    background-image: 
-        linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%),
-        linear-gradient(45deg, #eee 25%, white 25%, white 75%, #eee 75%, #eee 100%); */
+
 }
 
 .main-wrapper header h1{
@@ -115,6 +110,7 @@ body {
     background: white;
     width:400px;
     box-sizing: border-box;
+    padding: 0 20px;
     /* padding: 0 2.5%; */
     /* border: solid 1px lightgrey; */
     /* padding: 20px; */
@@ -136,7 +132,7 @@ body {
 
 .main > section {
     min-width: 500px;
-    border: solid 1px lightgrey;
+    /* border: solid 1px lightgrey; */
 }
 
 .main button {
