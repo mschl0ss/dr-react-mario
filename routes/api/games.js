@@ -78,6 +78,7 @@ function generateInitialState(virusLevel) {
     }
 
     // word.
+    console.log(board.length)
     return board;
      
 }
@@ -95,19 +96,24 @@ router.get('/all', (req,res) => {
         })
     })
 })
+
 router.get('/', (req, res) => {
-    Game.findOne({name: req.query.name})
+    const theName = req.query.name;
+    Game.findOne({ name: { $regex: new RegExp(theName, "i") }})
     .then(game => {
        
         if(game) {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 30; i++) seedValues.push(rng.nextInt(0, 30));
+            for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
             res.json({
                 name: game.name,
                 id: game.id,
-                seedValues: seedValues,
                 players: game.players,
+                difficulty: game.difficulty,
+                virusLevel: game.virusLevel,
+                initialState: generateInitialState(game.virusLevel),
+                seedValues: seedValues,
             })
         }
         else {
@@ -146,9 +152,9 @@ router.post('/', (req,res) => {
             // debugger;
             const outputErrors = [];
             // if(err.errors.name) outputErrors.push('please enter a game name');
-            if(err.message.includes('player name is required')) outputErrors.push('player name is required');
+            // if(err.message.includes('player name is required')) outputErrors.push('player name is required');
             // res.status(418).json({ createGame: outputErrors })
-            res.status(418).json({ createGame: err.message })
+            res.status(418).json({ createGame: [err.message] })
             }
         );
 })
@@ -163,7 +169,7 @@ router.patch('/', (req,res) => {
                 .then(game=>{
                     let rng = new Prando(game.id);
                     const seedValues = [];
-                    for (let i = 0; i < 30; i++) seedValues.push(rng.nextInt(0, 30));
+                    for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
                     res.json({
                         name: game.name,
                         id: game.id,

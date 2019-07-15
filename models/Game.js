@@ -14,11 +14,11 @@ const GameSchema = new Schema({
     },
     difficulty: {
         type: String,
-        required: true
+        
     },
     virusLevel: {
         type: Number,
-        required: true
+        
     },
     players: {
         type: [Player],

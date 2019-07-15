@@ -44,8 +44,8 @@ export const fetchGames = () => dispatch => (
             err => console.log(err))
 )
 
-export const createGame = (name, player) => dispatch => (
-    gameUtil.createGame(name, player)
+export const createGame = (name, player, virusLevel, difficulty) => dispatch => (
+    gameUtil.createGame(name, player,virusLevel, difficulty)
         .then(game => dispatch(receiveGame(game)),
         err => (dispatch(receiveGameErrors(err.response.data))))
 )

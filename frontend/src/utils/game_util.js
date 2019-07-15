@@ -12,10 +12,12 @@ export const getGames = () => (
     axios.get('/api/games/all')
 )
 
-export const createGame = (name, player) => (
+export const createGame = (name,virusLevel,difficulty,player) => (
     axios.post('/api/games', {
         name,
-        player
+        player,
+        virusLevel,
+        difficulty,
     })
 )
 
