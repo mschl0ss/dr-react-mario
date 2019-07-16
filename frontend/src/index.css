@@ -14,5 +14,24 @@ code {
     monospace;
 }
 
+#content {
+    display: flex; 
+    height: 100vh; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.main-grid {
+    display: grid; 
+    grid-template-columns: repeat(8, 50px); 
+    grid-template-rows: repeat(20, 50px); 
+    background-color: black
+}
+.virus, .pixel {
+    width: 100%
+}
+.virus, .pixel {
+    grid-column: span 1; 
+}
 
 

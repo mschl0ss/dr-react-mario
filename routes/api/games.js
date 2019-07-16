@@ -96,6 +96,8 @@ router.get('/all', (req,res) => {
     })
 })
 
+
+
 router.get('/', (req, res) => {
     const theName = req.query.name;
     Game.findOne({ name: { $regex: new RegExp(theName, "i") }})
@@ -183,6 +185,7 @@ router.patch('/', (req,res) => {
             }
         })
 })
+
 
 router.delete('/', (req,res) => {
     // debugger;
