@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
+const socketIo = require("socket.io");
 const users = require("./routes/api/users");
 const games = require('./routes/api/games');
 
@@ -25,9 +26,46 @@ app.use(bodyParser.json());
 app.use("/api/games", games);
 
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+const port = 5000;
 
 
 
 
+
+const http = require("http");
+// const index = require("./routes/sockets/index");
+const server = http.createServer(app);
+
+const io = socketIo(server); // < Interesting!
+
+
+let interval;
+
+io.on("connection", socket => {
+    socket.join('some room');
+
+    socket.on('toAPI', function (someArg) {
+        if (someArg.data.currentPlayer === 0) {
+            someArg.data.currentPlayer = 1
+        } else {
+            someArg.data.currentPlayer = 0
+        };
+        io.to("some room").emit("FromAPI", someArg.data)
+    });
+    socket.on('player_change', function(someArg) {
+        
+        io.to("some_room").emit("change_player", someArg.data)
+    })
+
+
+    console.log("New client connected");
+    if (interval) {
+        clearInterval(interval);
+    }
+    // socket.on("toAPI", data)
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+    });
+});
+
+server.listen(port, () => console.log(`Server is running on port ${port}`));

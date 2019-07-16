@@ -20,6 +20,9 @@ router.get('/all', (req,res) => {
         })
     })
 })
+
+
+
 router.get('/', (req, res) => {
     Game.findOne({name: req.query.name})
     .then(game => {
@@ -97,6 +100,7 @@ router.patch('/', (req,res) => {
             }
         })
 })
+
 
 router.delete('/', (req,res) => {
 
