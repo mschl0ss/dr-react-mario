@@ -31,7 +31,7 @@ class Main extends React.Component {
                             <h3>play the game</h3>
                             <div className="game-board">
                                 <figure>
-                                    <img src="board-mock.png" />
+                                    <img src="board-mock.png" alt="board wireframe"/>
                                 </figure>
                             </div>
                     </section>

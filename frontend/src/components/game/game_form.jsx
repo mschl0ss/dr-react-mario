@@ -10,10 +10,13 @@ class GameForm extends React.Component {
                 players: [],
                 seedValues: []
             },
+            activeTab: 1,
             errors: [],
             createGame: {
                 playerName: '',
                 gameName: '',
+                difficulty: 'easy',
+                virusLevel: 10,
             },
             getGame: {
                 gameName: '',
@@ -48,21 +51,32 @@ class GameForm extends React.Component {
     componentDidUpdate(prevProps) {
         if(prevProps.game !== this.props.game) {
             this.setState({game: this.props.game});
+            this.setState({ errors: this.props.errors })
             window.scrollTo(0, 0);
+            
         }
         if(prevProps.games !== this.props.games) {
             this.setState({games: this.props.games});
         }
         if(prevProps.errors !== this.props.errors) {
-            this.setState({ errors: this.props.errors })
-            window.scrollTo(0, 0);
+            // debugger;
+            
+            // window.scrollTo(0, 0);
         }
     }
 
+    activateTab(tabIndex) {
+        this.setState({activeTab: tabIndex})
+    }
     handleCreateSubmit(e) {
         e.preventDefault();
-        this.props.createGame(this.state.createGame.gameName, this.state.createGame.playerName)
+        this.props.createGame(
+                this.state.createGame.gameName, 
+                this.state.createGame.virusLevel,
+                this.state.createGame.difficulty,
+                this.state.createGame.playerName)
         this.clearInputs();
+        this.props.fetchGames();
     }
     handleGetSubmit(e) {
         // console.log('handlGetSubmit')
@@ -70,6 +84,7 @@ class GameForm extends React.Component {
         this.props.fetchGame(this.state.getGame.gameName);
         this.props.clearQueryString();
         this.clearInputs();
+        // 
     }
     handleJoinSubmit(e) {
         e.preventDefault();
@@ -129,12 +144,28 @@ class GameForm extends React.Component {
     }
 
     renderCreate() {
+        const colors = ["#4CAE50", '#3F52F4', '#e50301']
+        const difficulty = ['easy','medium','hard'].map((difficulty, i) => {
+            const isActive = this.state.createGame.difficulty === difficulty ? true: false;
+            return (
+            <li key={difficulty}>
+                <label>
+                    <input type="radio" name="createGamedifficulty" value={difficulty}
+                    onChange={this.updateCreate('difficulty')}
+                    checked={isActive} 
+                    />
+                    <span 
+                        className={isActive ? "checked" : null}
+                        style={isActive ? 
+                            { color: colors[i] } : null}
+                            >
+                                &#8681;</span>
+                </label>
+                <span>{difficulty}</span>
+            </li>
 
-        // <div className="pill-button">
-        //     <button type="submit">create game</button>
-        //     <div className="left-pill"></div>
-        //     <div className="right-pill"></div>
-        // </div>
+        )}
+        )
 
         return(
             <form onSubmit={this.handleCreateSubmit} className="create-form" >
@@ -150,7 +181,34 @@ class GameForm extends React.Component {
                     value="id will be automatically generated"
                     disabled />
 
-                {/* <label htmlFor="create-player">your name:</label> */}
+                <div>
+                    <div className="slider-header">
+                        <h5>choose virus level</h5>
+                        <div 
+                            style={
+                                this.state.createGame.virusLevel > 16 ?
+                                    {borderColor: '#c40303', background: '#E50301',color: 'white' } :
+                                    this.state.createGame.virusLevel < 5 ?
+                                    {borderColor: 'rgb(76, 174, 80)', background: 'rgb(76, 174, 80)', color: 'white' } :
+                        null}
+                        >{this.state.createGame.virusLevel}</div>
+                    </div>
+                    
+                    <input type="range" min="1" max="20" 
+                        value={this.state.createGame.virusLevel}
+                        onChange={this.updateCreate('virusLevel')} 
+                        className="slider" id="virusSlider" 
+                        />       
+                </div>
+                <div>
+                    <h5>choose difficulty</h5>
+                    <ul className="create-difficulty">
+                        {difficulty}
+                    </ul>
+                </div>
+
+          
+
                 <input type="text" id="create-player"
                     value={this.state.createGame.playerName}
                     onChange={this.updateCreate('playerName')} 
@@ -165,25 +223,26 @@ class GameForm extends React.Component {
     renderShow() {
         const players = this.state.game.players;
         
-                
         return (
             <div className="show-join">
 
                 <form onSubmit={this.handleJoinSubmit}>
                 
                     <h4>current game:</h4>
-                    {/* <label htmlFor="show-name">game name:</label> */}
+
+                    <h5>game name</h5>
                     <input type="text" id="show-name"
                         value={this.state.game.name}
-                        onChange={this.updateCreate('gameName')}
                         disabled />
 
-                    {/* <label htmlFor="show-id">id:</label> */}
-                    <input type="text" id="show-id"
-                        value={this.state.game.id}
-                        disabled />
+                    <h5>virus level</h5>
+                    <input type="text" value={this.state.game.virusLevel} disabled/>
 
-                    
+                    <h5>difficulty level</h5>
+                    <input type="text" value={this.state.game.difficultyLevel} disabled/>
+
+
+                    <h5>players</h5>
                     <input type="text" id="show-player-0"
                         value={this.state.game.players[0].name}
                         disabled />
@@ -201,7 +260,7 @@ class GameForm extends React.Component {
                         <input type="submit" 
                             value="join game" />
                         </div>
-                }
+                    }
 
                 <button onClick={this.handleShowSubmit}>clear game</button>
                
@@ -211,23 +270,18 @@ class GameForm extends React.Component {
     }
 
     renderFindGame() {
-
         return (
-                
                 <form onSubmit={this.handleGetSubmit}>
                     <h4>find a game to join</h4>
                     <input type="text" id="find-game-name"
                             value={this.state.getGame.gameName} 
                             onChange={this.updateGet('gameName')} 
                             placeholder="enter game name"/>
-                    
-
                     <button type="submit">find game</button>
                 </form>
-           
         )
-
     }
+
     render() {
 
         const errors = this.props.errors.length? this.props.errors[0].map((error,i) => {
@@ -235,7 +289,7 @@ class GameForm extends React.Component {
             <li key={i}>{error}</li>
         )}) : null;
         
-        
+        const activeTab = this.state.activeTab;
         return (
             <>
                
@@ -247,8 +301,14 @@ class GameForm extends React.Component {
                             &#10006;
                         </button> : null}
                 </ul>
-
-
+{/* 
+                <ul className="tabs">
+                    <li onClick={this.activateTab}>
+                        create game
+                    </li>
+                    <li>search or join a game</li>
+                    <li>controls</li>
+                </ul> */}
                 {this.state.game.name ? this.renderShow() : this.renderCreate()}
                 {this.renderFindGame()}
                

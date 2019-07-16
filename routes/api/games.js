@@ -69,7 +69,6 @@ function generateInitialState(virusLevel) {
 
             }
             if (!shuffledSquares[pick]) {
-                // debugger;
             }
             usedPicks.push(pick);
             thisRow.push(shuffledSquares[pick]);
@@ -124,6 +123,7 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', (req,res) => {
+    // debugger;
     const newGame = new Game({
         name: req.body.name,
         virusLevel: req.body.virusLevel,

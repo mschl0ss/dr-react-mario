@@ -19,7 +19,7 @@ const msp = state => {
 const mdp = dispatch => ({
     fetchGame: name => dispatch(fetchGame(name)),
     fetchGames: () => dispatch(fetchGames()),
-    createGame: (name,player) => dispatch(createGame(name,player)),
+    createGame: (name, virusLevel, difficulty, player) => dispatch(createGame(name, virusLevel, difficulty, player)),
     joinGame: (name,player) => dispatch(joinGame(name,player)),
     clearGames: () => dispatch(clearGames()),
     clearGamesErrors: () => dispatch(clearGamesErrors()),
