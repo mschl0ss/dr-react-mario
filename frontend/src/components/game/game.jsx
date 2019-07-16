@@ -24,6 +24,7 @@ class Game extends React.Component {
             pills: []
         }
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.checkCombo = this.checkCombo.bind(this);
     }
     componentDidMount() {
         if(this.state.board != undefined){
@@ -88,11 +89,152 @@ class Game extends React.Component {
             board[pill.y][pill.x] = pill.color;
         }
         
+        this.checkCombo()   
+        this.updatePills();  
+
+
+
         this.setState({
             board: board
         })
 
     }
+
+    updatePills() {
+        let pills = this.state.pills;
+        for(let i =0 ;i < pills.length; i++) {
+            if(pills[i].falling === true && pills[i].y < 19 && this.state.board[pills[i].y+1][pills[i].x] === 0) {
+                pills[i].y = pills[i].y + 1;
+            }
+        }
+        this.setState({
+            pills:pills
+        })
+    }
+    dropColumn(i,j) {
+        let board = this.state.board;
+        let pills = this.state.pills;
+        for(let x = 0; x< pills.length; x++) {
+            if(pills[x].x === i && pills[x].y < j) {
+                pills[x].falling = true;
+            }
+        }
+
+        this.setState({
+            pills: pills
+        })
+        
+    }
+
+    checkCombo() {
+        let curCount = 0;
+        let curColor = 0;
+
+        //check rows
+        let pills = this.state.pills
+        for(let i =0; i <  this.state.board.length; i++) {
+            let curRow = this.state.board[i];
+            curCount = 0;
+            curColor = 0;
+            for(let j =0; j< curRow.length; j++) {
+                if(curRow[j] != 0) {
+                    if(curCount === 0) {
+                        curColor = curRow[j];
+                        curCount += 1;
+                    } else {
+                        if(curColor === curRow[j]) {
+                            curCount+= 1;
+                        }else {
+                            curCount = 1;
+                            curColor = curRow[j];
+                        }
+                    }
+                    if(curCount === 4) {
+                        for(let z = 0; z < pills.length; z++) {
+
+                            if((pills[z].x === j-1 && pills[z].y) === i ||
+                                (pills[z].x === j -2 && pills[z].y) === i ||
+                                (pills[z].x === j -3 && pills[z].y) === i ||
+                                (pills[z].x === j && pills[z].y) === i ) {
+                                
+                                pills.splice(z,1);
+                                z=0;
+                                
+                            }
+                        }
+                        curCount = 0;
+                        curColor = 0;
+                        this.dropColumn(i,j);
+                        this.dropColumn(i,j-1);
+                        this.dropColumn(i,j-2);
+                        this.dropColumn(i,j-3);
+                    }
+                }else {
+                    curCount = 0;
+                    curColor = 0;
+                }
+            
+        }
+
+        this.setState({
+            pills: pills
+        })
+
+        //check columns
+        if(this.state.board !== 0) {
+            
+            let pills = this.state.pills;
+            let pillFalling = this.state.pillFalling;
+        for(let i =0; i < 8; i++) {
+            curCount = 0;
+            curColor = 0;
+                for( let j = 0; j< this.state.board.length ;j++) {
+                    if(this.state.board[j][i] !== 0) {
+                        if(curCount === 0) {
+                            curColor = this.state.board[j][i];
+                            curCount += 1;
+                        } else {
+                            if(curColor === this.state.board[j][i]) {
+                                curCount+= 1;
+                            }else {
+                                curCount = 1;
+                                curColor = this.state.board[j][i];
+                            }
+                        }
+                        if(curCount === 4) {
+                            for(let z = 0; z < pills.length; z++) {
+                                if((pills[z].x === i && pills[z].y) === j ||
+                                    (pills[z].x === i && pills[z].y) === j-1 ||
+                                    (pills[z].x === i && pills[z].y) === j-2 ||
+                                    (pills[z].x === i && pills[z].y) === j-3 ) {
+                                    
+                                    pills.splice(z,1);
+                                    z=0;
+                                    
+                                }
+                                this.dropColumn(i,j)
+                            }
+                            curCount = 0;
+                            curColor = 0;
+                           
+                    
+                        }
+                    }else {
+                        curCount = 0;
+                        curColor = 0;
+                    }
+                }
+            }
+            this.setState({
+                pills: pills,
+                pillFalling: pillFalling
+            })
+        }
+    }
+    }
+
+   
+
     //check for pills colliding with pills
     checkCollisionWithPills(state) {
         let pills = this.state.pills;
