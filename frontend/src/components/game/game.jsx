@@ -100,14 +100,10 @@ class Game extends React.Component {
             let pill = this.state.pills[i];
             board[pill.y][pill.x] = pill.color;
         }
-<<<<<<< HEAD
-
-=======
         
         this.setState({
             board: board
         })
->>>>>>> 7c7e80ecf7cc839e2a5c1ca962c4602e57810d93
 
 
         this.checkCombo()     
@@ -128,22 +124,37 @@ class Game extends React.Component {
         let pillFalling = true;
 
        
-        for (let i = 0; i < state.pills.length; i++) {
-            let pill = state.pills[i];
-             //! Vertical Collisions
-            if ((state.curPill1X === pill.x && state.curPill1Y+1 === pill.y) || (state.curPill2X === pill.x && state.curPill2Y + 1 === pill.y) || 
-                state.curPill1Y ===19 || state.curPill2Y ===19) {
+        // for (let i = 0; i < state.pills.length; i++) {
+        //     let pill = state.pills[i];
+        //      //! Vertical Collisions
+        //     if ((state.curPill1X === pill.x && state.curPill1Y + 1 === pill.y) || (state.curPill2X === pill.x && state.curPill2Y + 1 === pill.y) || (this.state.board[this.state.curPill1Y+1][this.state.curPill1X] !== 0) || (this.state.board[this.state.curPill2Y+1][this.state.curPill2X] !== 0) ||
+        //         state.curPill1Y ===19 || state.curPill2Y ===19) {
 
+        //         pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
+        //         pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
+        //         pillFalling = false;
+
+        //         this.setState({
+        //             pills: pills,
+        //             pillFalling: pillFalling //? you mean pillFalling: false
+        //         })
+        //         return;
+        //     }
+        // }
+
+
+
+        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) || 
+            (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
 
                 this.setState({
                     pills: pills,
-                    pillFalling: pillFalling //? you mean pillFalling: false
+                    pillFalling: pillFalling 
                 })
-                return;
-            }
+            return;
         }
     }
 
@@ -353,14 +364,14 @@ class Game extends React.Component {
                 }
 
                   
-                if (this.state.board[i][j] === 4) {
-                    row.push(<img className="pixel" src="r-virus.png" alt="" />)
+                if (this.state.board[row][col] === 4) {
+                    rows.push(<img className="pixel" src="r-virus.png" alt="" />)
                 }
-                if (this.state.board[i][j] === 5) {
-                    row.push(<img className="pixel" src="b-virus.png" alt="" />)
+                if (this.state.board[row][col] === 5) {
+                    rows.push(<img className="pixel" src="b-virus.png" alt="" />)
                 }
-                if (this.state.board[i][j] === 6) {
-                    row.push(<img className="pixel" src="y-virus.png" alt="" />)
+                if (this.state.board[row][col] === 6) {
+                    rows.push(<img className="pixel" src="y-virus.png" alt="" />)
                 }
             }
         }
