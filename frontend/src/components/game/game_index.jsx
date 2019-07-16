@@ -11,11 +11,20 @@ class GameIndex extends React.Component {
                 name: "",
                 players: [],
                 seedValues: [],
-            }]
+            }],
+            filteredGames: [{
+                id: "",
+                name: "",
+                players: [],
+                seedValues: [],
+            }],
+            queryString: '',
+
         }
     }
     componentDidMount(){
         this.props.clearGames();
+        console.log('index mounted')
         this.props.fetchGames();
     }
 
@@ -23,43 +32,40 @@ class GameIndex extends React.Component {
         if(prevProps.games !== this.props.games) {
             this.setState({games:this.props.games})
         }
+        if(prevProps.filteredGames !== this.props.filteredGames) {
+            this.setState({filteredGames:this.props.filteredGames})
+            this.setState({queryString:this.props.queryString})
+        }
     }
 
-    
-
-
     render() {
-    
-        const pListStyle = { listStyle: 'none', borderTop: 'solid 1px black', borderBottom: 'solid 1px black',
-            margin: '20px 0',padding: '20px 0 20px 20px', width: '300px'}
-        const gListStyle = { listStyle: 'none', marginBottom: '30px',paddingBottom: '20px', borderBottom: 'solid 3px black'}
-        const games = this.state.games.map((game,i) => (
 
-            <ul key={i} style={gListStyle}>
+            const whichGames = this.state.queryString.length ? 
+                this.state.filteredGames : this.state.games;
+
+            const games = whichGames.map((game,i) => (
+            <ul key={i} >
                 <li key={game.name}><h2>name: {game.name}</h2></li>
-                <li key={game._id}><h4>id: {game._id}</h4></li>
-                <li>Players:
+                {/* <li key={game._id}><h4>id: {game._id}</h4></li> */}
+                <li className="last">
                     {game.players ? game.players.map((player,i)=> (
                         
-                        <ul key={i} style={pListStyle}>
+                        <ul key={i} >
                             <li>name: {player.name}</li>
-                            <li>id: {player._id}</li>
+                            {/* <li>id: {player._id}</li> */}
                         </ul>
                         
                     )):null}
                 </li>
-                <li key={game._id + game.name}>
-                    sample seed values:&nbsp;
-                    {game.seedValues ? game.seedValues.map((value, i) => {
-                        let string = value.toString();
-                        if (i !== game.seedValues.length - 1) string += ", ";
-                        return string;
-                    }): null}
-                </li>
+                <button onClick={() => this.props.fetchGame(game.name)}>select this game</button>
             </ul>
+            
+        
         ))
+        const searchHeader = this.state.queryString.length ? <>{`search ${this.state.queryString} => ${this.state.filteredGames.length} results`} </>: null 
         return (
-            <div>
+            <div className="games-index">
+                <h4 className="search-header" >{searchHeader}</h4>
                 {games}
             </div>
         )

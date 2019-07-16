@@ -110,18 +110,20 @@ class Game extends React.Component {
  
     }
 
-
+//* (state.curPill2Y === pill.y && state.curPill2X + 1 === pill.x) ||
 
     //check for pills colliding with pills
     checkCollisionWithPills(state) {
         let pills = this.state.pills;
         let pillFalling = true;
+
+       
         for (let i = 0; i < state.pills.length; i++) {
             let pill = state.pills[i];
-            if((state.curPill1X === pill.x && state.curPill1Y+1 === pill.y) ||
-            (state.curPill2X === pill.x && state.curPill2Y+1 === pill.y) ||
-            state.curPill1Y ===19 ||
-            state.curPill2Y ===19) {
+             //! Vertical Collisions
+            if ((state.curPill1X === pill.x && state.curPill1Y+1 === pill.y) || (state.curPill2X === pill.x && state.curPill2Y + 1 === pill.y) || 
+                state.curPill1Y ===19 || state.curPill2Y ===19) {
+
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
@@ -132,8 +134,8 @@ class Game extends React.Component {
                 })
                 return;
             }
-            }
         }
+    }
 
     checkCombo() {
         let curCount = 0;
@@ -159,7 +161,7 @@ class Game extends React.Component {
                         }
                     }
                     if(curCount === 4) {
-                        console.log("4 in a row")
+                        // console.log("4 in a row")
                         for (let z = 0; z < pills.length; z++) {
 
                             if ((pills[z].x === j - 1 && pills[z].y) === i ||
@@ -239,18 +241,24 @@ class Game extends React.Component {
         }
     }
 
-   
+    // TODO => Add this for horizontal collisions (this.state.curPill1Y === pill.y && this.state.curPill1X + 1 === pill.x) || (this.state.curPill2Y === pill.y && this.state.curPill2X + 1 === pill.x)
 
     handleKeyPress(e) {
+        // debugger 
         if (this.state.pillFalling) {
             //move pill to left
-            if (e.keyCode === 37 && this.state.curPill1X !== 0 && this.state.curPill2X !== 0 ) {
+            if (e.keyCode === 37 && this.state.curPill1X !== 0 && this.state.curPill2X !== 0 &&
+                 this.state.board[this.state.curPill1Y][this.state.curPill1X - 1] === 0 ) {
+
                 this.setState({
                     curPill2X: this.state.curPill2X - 1,
                     curPill1X: this.state.curPill1X - 1,
                 })
+                
                 //move pill to right
-            } else if (e.keyCode === 39 && this.state.curPill1X !== 7 && this.state.curPill2X !== 7 ) {
+            } else if (e.keyCode === 39 && this.state.curPill1X !== 7 && this.state.curPill2X !== 7 && 
+                this.state.board[this.state.curPill2Y][this.state.curPill2X + 1] === 0 ) {
+
                 this.setState({
                     curPill2X: this.state.curPill2X + 1,
                     curPill1X: this.state.curPill1X + 1,
@@ -297,26 +305,6 @@ class Game extends React.Component {
         }
     }
 
-
-
-    renderSquares() {
-        let row = [];
-
-        for (let i = 0; i < 20; i++) {
-            for (let j = 0; j < 8; j++) {
-                if (this.state.board[i][j] === 0) {
-                    row.push(<div></div>)
-                }
-                if (this.state.board[i][j] === 1 ) {
-                    row.push(<img className="pixel" src="b-left.png" alt="" />)
-                }
-                if (this.state.board[i][j] === 2) {
-                    row.push(<img className="pixel" src="y-right.png" alt="" />)
-                }
-            }
-        }
-        return row;
-    }
 
     renderSqrs() {
         let rows = []; 

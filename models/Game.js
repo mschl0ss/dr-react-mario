@@ -12,6 +12,14 @@ const GameSchema = new Schema({
         type: String,
         required: true
     },
+    difficulty: {
+        type: String,
+        
+    },
+    virusLevel: {
+        type: Number,
+        
+    },
     players: {
         type: [Player],
         validate: [twoPlayerLimit, 'Cant have more than 2 players']

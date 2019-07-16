@@ -1,56 +1,266 @@
-#main-wrapper {
-    width: 1000px;
+@import url('https://fonts.googleapis.com/css?family=Corben:700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+/* #475572, */
+/* #dae3ef */
+
+body {
+    background-position: 0px 0px, 10px 10px;
+    background-size: 20px 20px;
+    background-image: 
+        linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee 100%),
+        linear-gradient(45deg, #eee 25%, white 25%, white 75%, #eee 75%, #eee 100%);
+}
+#root { background: none;}
+
+
+.mask {
+    height: 200px;
+    position: absolute;
+    top: 0;
+    opacity: .7;
+    /* background: #4C2463; */
+    background: black;
+    width: 100vw;
+}
+.main-wrapper {
+    width: 1400px;
     margin: 0 auto;
+    z-index: 5;
+    
+
 }
-#main {
+
+.main-wrapper header {
+    height: 200px;
+    position: relative;
+
+}
+
+.main-wrapper header h1{
+    position: absolute;
+    margin: 0 auto;
+    top: 65px;
+    font-size: 59px;
+    font-family: 'Corben';
+    color: #feef00;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+}
+
+.main-wrapper header .logo {
+    width: 60%;
+    position: relative;
+    margin: 0 auto;
+    height: 100%;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+.main-wrapper header .logo div {
+    border: solid 5px black;
+    width: 46%;
+    height: 80%;
+    /* position: absolute; */
 }
 
-#main > * {
+.main-wrapper header .logo .left-pill{
+    background: #E50301;
+    /* background: #C36865; */
+    left: 0;
+    border-radius: 80px 0 0 80px;
+    border-right-width: 1px;
+    
+}
+.main-wrapper header .logo .right-pill{
+    background: #1d53f4;
+    /* background: #7F9AD1; */
+    right: 0;
+    border-radius: 0 80px 80px 0;
+    border-left-width: 1px;
+}
+
+/* .main-wrapper header .mask {
+    height: 200px;
+    position: absolute;
+    top: 0;
+    background: grey;
+    opacity: .5;
+    background: #54267F;
+    width: 100%;
+} */
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Fira Sans', sans-serif;
+    /* background: white; */
+    position: relative;
+}
+
+
+
+.main > aside, .main > section {
     box-sizing: border-box;
-    min-height: 800px;
+    min-height: 1500px;
+    z-index: 5;
 }
 
-#main > aside {
-    width: 30%;
+.main > aside {
+    font-family: 'Source Code Pro', monospace;
+    background: white;
+    width:400px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    /* padding: 0 2.5%; */
+    /* border: solid 1px lightgrey; */
     /* padding: 20px; */
 }
 
-#main > section {
-    width: 400px;
+.main > section {
+    width: 560px;
 }
 
-#main > aside > * {
-    /* padding: 0 10px; */
-}
-#main > aside > h3 {
+.main > * > h3,  .details-widget > h3{
     font-size: 20px;
-    padding: 20px 0;
-    border-bottom: solid 1px black;
+    font-weight: 600;
+    padding: 20px 0 0 ;
+    text-align: center;
+    margin-bottom: 56px;
+    /* border-bottom: solid 1px black; */
+    
 }
 
-#main .left .details {
+.main > section {
+    min-width: 500px;
+    /* border: solid 1px lightgrey; */
+}
+
+.main button {
+    cursor: pointer;
+}
+.hidden {
+    display: none;
+}
+
+
+/*
+.main .left .details {
     display: flex;
     justify-content: space-around;
     
 }
 
-#main .left .details ul > li {
-    padding: 10px 0;
+.main .left .details ul li {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 35px;
 }
-#main .left .details .labels {
-    width: 20%;
+.main .left .details .labels {
+    width: 30%;
     text-align: right;
 }
 
-#main .left .details .values {
+.main .left .details .values {
     width: 70%;
 }
 
-#main .left button {
+.main .left form.create-form {
+    border: solid 3px slategray;
+    border-radius: 30px;
+}
+.main .left .details.create{
+    color: #475572;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 20px;
+    border-radius: 28px;
+    border: solid 3px #7F9AD1;
+    opacity: .9;
+    box-sizing: border-box;
+    background: #dae3ef
+}
+
+.main .left .details.create [type=text]{
+    outline: none;
+    width: 90%;
+    padding: 7px 10px;
+    box-sizing: border-box;
+    box-shadow: inset -1px 1px 10px 5px rgba(0, 0, 0, 0.07);
+    border-radius: 6px;
+    background: white;
+    font-family: 'Source Code Pro', monospace;
+    color: black;
+    border: solid 2px #7F9AD1;
+}
+*/
+/* blue #0B3085 */
+/* yellow #FED501 */
+
+/*
+.main .left .details.create [type="submit"] {
+    color: #feef00;
+    font-family: 'Source Code Pro', monospace;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 10px 0;
+    border: none;
+    background: transparent;
+    width: 100%;
+    cursor: pointer;
+    z-index: 2;
+    text-shadow: 
+        -1px -1px 0 #475572,
+         1px -1px 0 #475572,
+        -1px 1px 0 #475572,
+         1px 1px 0 #475572;
+}
+
+.main .left .details.create {
+   
+}
+
+.main .left .details.create > div{
+    display: flex;
+    width: 100%;
+}
+
+main .left .details.show .text-button {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.main .left button {
+    float: right;
+}
+
+.main .left .errors {
+    color: red;
+    font-weight: 600;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 48px;
+    justify-content: space-evenly;
+    margin: 10px 0;
+    
+}
+
+.main .left .form-wrapper {
     margin: 20px 0;
 }
-#main .left form {
+.main .left form {
     box-sizing: border-box;
-    border: solid 1px black;
+    border: solid 1px lightgray;
 }
+
+
+
+
+
+*/
