@@ -1,27 +1,32 @@
 import React from 'react';
-import GameFormContainer from '../game/game_form_container';
-import DetailsWidget from '../../components/main/details_widget';
+import {connect} from 'react-redux';
 
+import GameFormContainer from '../game/game_form_container';
+import GameContainer from '../game/game_container';
+import DetailsWidget from '../../components/main/details_widget';
+import Curtain from './curtain';
+
+const msp = state => ({
+    activeGame: state.ui.activeGame
+})
 
 class Main extends React.Component {
-    // constructor(props) {
-    //     super(props);
+    constructor(props) {
+        super(props);
 
-    //     this.state = {
-    //         keyPresses : {
-    //             left: 0,
-    //         }
+        this.state = {
+            activeGame:false,
             
 
-    //     }
-    // }
+        }
+    }
 
-    // componentDidUpdate(prevProps) {
-    //     if(prevProps.keyPresses !== this.props.keyPresses) {
-            // check which key changed
-    //         //if left send the hardcoded keycode for left to the handle key press event
-    //     }
-    // }
+    componentDidUpdate(prevProps) {
+        if(prevProps.activeGame !== this.props.activeGame) {
+            this.setState({activeGame: this.props.activeGame})
+        }
+    }
+
     render() {
         return (
             <>
@@ -46,9 +51,14 @@ class Main extends React.Component {
 
                             <h3>play the game</h3>
                             <div className="game-board">
-                                <figure>
+                                {/* <figure>
                                     <img src="board-mock.png" alt="board wireframe"/>
-                                </figure>
+                                </figure> */}
+                                {/* { this.state.activeGame === true ? <div>game</div>: <Curtain />} */}
+                                { this.state.activeGame === true ? <GameContainer /> : <Curtain />}
+                               
+
+
                             </div>
                     </section>
 
@@ -64,4 +74,4 @@ class Main extends React.Component {
     }
 }
 
-export default Main;
+export default connect(msp)(Main);
