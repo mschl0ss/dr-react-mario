@@ -231,7 +231,7 @@ class Game extends React.Component {
                         this.dropColumn(i,j-2);
                         this.dropColumn(i,j-3);
                     }
-                }else {
+                } else {
                     curCount = 0;
                     curColor = 0;
                 }
@@ -247,10 +247,10 @@ class Game extends React.Component {
             
             let pills = this.state.pills;
             let pillFalling = this.state.pillFalling;
-        for(let i =0; i < 8; i++) {
+        for ( let i =0; i < 8; i++) {
             curCount = 0;
             curColor = 0;
-                for( let j = 0; j< this.state.board.length ;j++) {
+                for( let j = 0; j < this.state.board.length ;j++) {
                     if(this.state.board[j][i] !== 0) {
                         if(curCount === 0) {
                             if(this.state.board[j][i] === 4) {
@@ -369,7 +369,7 @@ class Game extends React.Component {
         if (this.state.pillFalling) {
             //move pill to left
             if (e.keyCode === 37 && this.state.curPill1X !== 0 && this.state.curPill2X !== 0 &&
-                 this.state.board[this.state.curPill1Y][this.state.curPill1X - 1] === 0 ) {
+                (this.state.board[this.state.curPill1Y][this.state.curPill1X - 1] === 0 || this.state.board[this.state.curPill2Y][this.state.curPill2X - 1] === 0 ) ) {
 
                 this.setState({
                     curPill2X: this.state.curPill2X - 1,
@@ -378,7 +378,7 @@ class Game extends React.Component {
                 
                 //move pill to right
             } else if (e.keyCode === 39 && this.state.curPill1X !== 7 && this.state.curPill2X !== 7 && 
-                this.state.board[this.state.curPill2Y][this.state.curPill2X + 1] === 0 ) {
+                (this.state.board[this.state.curPill2Y][this.state.curPill2X + 1] === 0 || this.state.board[this.state.curPill1Y][this.state.curPill1X + 1] === 0 ) ) {
 
                 this.setState({
                     curPill2X: this.state.curPill2X + 1,
