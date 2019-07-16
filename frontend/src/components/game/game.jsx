@@ -22,6 +22,7 @@ class Game extends React.Component {
             curPill2C: 2,
             curPill20: 'HR',
             orientation: 0,
+            initialBoard: this.props.board,
             board: 0,
             pills: []
         }
@@ -30,18 +31,20 @@ class Game extends React.Component {
     }
 
     componentDidMount() {
-        setInterval(() => this.computeGame(), 200);
+        if(this.state.board != undefined){
+        setInterval(() => this.computeGame(), 500);
+        }
     }
 
     computeGame() {
         //Generate empty board
         let board = [];
-        for (let i = 0; i < 20; i++) {
+        for(let i = 0; i< this.state.initialBoard.length; i++) {
             let row = [];
-            for (let j = 0; j < 8; j++) {
-                row.push(0)
+            for(let j = 0;j< 8 ;j++){
+                row.push(this.state.initialBoard[i][j]);
             }
-            board.push(row)
+            board.push(row);
         }
 
         //update current pill position
@@ -97,7 +100,14 @@ class Game extends React.Component {
             let pill = this.state.pills[i];
             board[pill.y][pill.x] = pill.color;
         }
+<<<<<<< HEAD
 
+=======
+        
+        this.setState({
+            board: board
+        })
+>>>>>>> 7c7e80ecf7cc839e2a5c1ca962c4602e57810d93
 
 
         this.checkCombo()     
@@ -342,7 +352,17 @@ class Game extends React.Component {
                     rows.push(<img className="pixel" src="y-down.png" alt="" />)
                 }
 
-            }   
+                  
+                if (this.state.board[i][j] === 4) {
+                    row.push(<img className="pixel" src="r-virus.png" alt="" />)
+                }
+                if (this.state.board[i][j] === 5) {
+                    row.push(<img className="pixel" src="b-virus.png" alt="" />)
+                }
+                if (this.state.board[i][j] === 6) {
+                    row.push(<img className="pixel" src="y-virus.png" alt="" />)
+                }
+            }
         }
         return rows; 
     }
