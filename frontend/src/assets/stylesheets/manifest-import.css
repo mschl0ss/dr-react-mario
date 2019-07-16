@@ -6,5 +6,6 @@
 /* Local css */
 @import './main/main.css';
 @import './main/form-column.css';
+@import './grid-layout.css';
 @import './main/game-container.css';
 @import './main/details-widget.css';
