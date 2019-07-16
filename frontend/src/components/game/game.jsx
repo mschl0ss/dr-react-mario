@@ -102,7 +102,7 @@ class Game extends React.Component {
 
         this.checkCombo()     
 
-         this.setState( {
+         this.setState({
              board:board
          })
 
@@ -131,21 +131,22 @@ class Game extends React.Component {
                     pillFalling: pillFalling //? you mean pillFalling: false
                 })
                 return;
-
+            }
             }
         }
 
     checkCombo() {
         let curCount = 0;
         let curColor = 0;
-
+        let pills = this.state.pills;
+        let pillFalling = this.state.pillFalling;
         //check rows
         for(let i =0; i <  this.state.board.length; i++) {
             let curRow = this.state.board[i];
             curCount = 0;
             curColor = 0;
             for(let j =0; j< curRow.length; j++) {
-                if(curRow[j] != 0) {
+                if(curRow[j] !== 0) {
                     if(curCount === 0) {
                         curColor = curRow[j];
                         curCount += 1;
@@ -159,7 +160,19 @@ class Game extends React.Component {
                     }
                     if(curCount === 4) {
                         console.log("4 in a row")
+                        for (let z = 0; z < pills.length; z++) {
 
+                            if ((pills[z].x === j - 1 && pills[z].y) === i ||
+                                (pills[z].x === j - 2 && pills[z].y) === i ||
+                                (pills[z].x === j - 3 && pills[z].y) === i ||
+                                (pills[z].x === j && pills[z].y) === i) {
+
+                                pills.splice(z, 1);
+                                z = 0;
+                            }
+                        }
+                        curCount = 0;
+                        curColor = 0;
                     }
                 }else {
                     curCount = 0;
@@ -169,6 +182,11 @@ class Game extends React.Component {
         }
 
         //check columns
+        this.setState({
+            pills: pills,
+            pillFalling: pillFalling
+        })
+        
         if(this.state.board !== 0) {
             
             let pills = this.state.pills;
@@ -186,9 +204,10 @@ class Game extends React.Component {
                                 curCount+= 1;
                             }else {
                                 curCount = 1;
-                                curColor = this.state.bozard[j][i];
+                                curColor = this.state.board[j][i];
                             }
                         }
+
                         if(curCount === 4) {
                             
                             for(let z = 0; z < pills.length; z++) {
@@ -196,8 +215,9 @@ class Game extends React.Component {
                                     (pills[z].x === i && pills[z].y) === j-1 ||
                                     (pills[z].x === i && pills[z].y) === j-2 ||
                                     (pills[z].x === i && pills[z].y) === j-3 ) {
-                                        debugger;
+
                                     pills.splice(z,1);
+                                    z = 0; 
                                     
                                 }
                             }
@@ -354,14 +374,9 @@ class Game extends React.Component {
                     {this.renderSqrs()}
                 </div>
             </div>
-<<<<<<< HEAD
-        )
-
-=======
         )  
       
         
->>>>>>> 751d11f7e3398e6151dd45d808b5b4d32ee0bffe
     }
 }
 export default Game;
