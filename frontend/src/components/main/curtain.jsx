@@ -14,15 +14,25 @@ const mdp = dispatch => ({
 })
 
 class Curtain extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            game: this.props.game,
+            gameActive: this.props.gameActive,
+        }
+    }
 
     componentDidUpdate(prevProps){
         if(prevProps !== this.props) {
             this.setState({ gameActive: this.props.gameActive, game: this.props.game})
         }
+        if(this.state.gameActive === true && this.props.game.id !== "" ) {
+            this.props.isGameActive(true);
+        }
     }
 
     startBlankGame() {
-        this.props.isGameActive(true);
+        this.setState({gameActive: true});
         const randomGame = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
         const randomPlayer = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
 

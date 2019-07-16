@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import GameFormContainer from '../game/game_form_container';
-import GameContainer from '../game/game';
+import GameContainer from '../game/game_container';
 import DetailsWidget from '../../components/main/details_widget';
 import Curtain from './curtain';
 
@@ -54,8 +54,8 @@ class Main extends React.Component {
                                 {/* <figure>
                                     <img src="board-mock.png" alt="board wireframe"/>
                                 </figure> */}
-                                { this.state.activeGame === true ? <div>game</div>: <Curtain />}
-                                {/* { this.state.activeGame === true ? <GameContainer /> : <Curtain />} */}
+                                {/* { this.state.activeGame === true ? <div>game</div>: <Curtain />} */}
+                                { this.state.activeGame === true ? <GameContainer /> : <Curtain />}
                                
 
 
