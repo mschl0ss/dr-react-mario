@@ -24,7 +24,6 @@ class GameIndex extends React.Component {
     }
     componentDidMount(){
         this.props.clearGames();
-        console.log('index mounted')
         this.props.fetchGames();
     }
 

@@ -272,6 +272,24 @@ aside.main-left {
     position: relative;
 }
 
+.main-left .divider {
+    position: relative;
+    margin: 25px 0;
+}
+.main-left .divider span{
+    margin: 0 auto;
+    color: rgba(26, 28, 29, 0.65);
+    font-size: 14px;
+    position: absolute;
+    top: 4px;
+    left: 120px;
+    padding: 0px 30px;
+    background: white;
+}
+.main-left .divider hr {
+    border-top: solid 1px rgba(232,234,235,.85);
+}
+
 
 /* -------GAMES INDEX */
 .main-left .games-index {

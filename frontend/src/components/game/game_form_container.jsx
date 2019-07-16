@@ -7,6 +7,7 @@ import {
         receiveQueryString, 
         clearQueryString
         } from '../../actions/game_search_actions';
+import { isGameActive } from '../../actions/ui_actions';
 
 const msp = state => {
     return ({
@@ -27,6 +28,7 @@ const mdp = dispatch => ({
     receiveFilteredGames: games => dispatch(receiveFilteredGames(games)),
     receiveQueryString: query => dispatch(receiveQueryString(query)),
     clearQueryString: () => dispatch(clearQueryString()),
+    isGameActive: bool => dispatch(isGameActive(bool))
 });
 
 export default connect(msp,mdp)(GameForm);

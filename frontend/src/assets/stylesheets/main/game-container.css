@@ -19,12 +19,17 @@
 
 
 .game-board{
-   
-    /* padding: 0 20px; */
+
     width: 560px;
-    /* height: 1000px; */
 
 }
+
+/* GAME BOARD CURTAIN */
+
+
+/* game board will be 720 high */
+
+
 
 .game-board figure {
     width: 560px;

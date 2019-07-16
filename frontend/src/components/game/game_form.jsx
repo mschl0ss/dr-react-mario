@@ -39,6 +39,7 @@ class GameForm extends React.Component {
         }
         
         this.handleGetSubmit = this.handleGetSubmit.bind(this);
+        this.handleStartSubmit = this.handleStartSubmit.bind(this);
         this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
         this.handleJoinSubmit = this.handleJoinSubmit.bind(this);
         this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
@@ -53,25 +54,34 @@ class GameForm extends React.Component {
         if(prevProps.game !== this.props.game) {
             this.setState({game: this.props.game});
             this.setState({ errors: this.props.errors })
-            window.scrollTo(0, 0);
-            
         }
-        if(prevProps.games !== this.props.games) {
-            // debugger;
-            this.setState({games: this.props.games});
-        }
-        if(prevProps.errors !== this.props.errors) {
-            // debugger;
-            
-            // window.scrollTo(0, 0);
-        }
+        if(prevProps.games !== this.props.games) {this.setState({games: this.props.games});}
+        if(prevProps.errors !== this.props.errors) {}
     }
 
     activateTab(tabIndex) {
         this.setState({activeTab: tabIndex})
     }
+
+    handleStartSubmit(e) {
+
+        if (arguments.length) e.preventDefault();
+        this.props.isGameActive(true);
+        const randomGame = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
+        const randomPlayer = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
+   
+        const gameName = this.state.createGame.gameName.length ? this.state.createGame.gameName : randomGame;
+        const virusLevel = this.state.createGame.virusLevel;
+        const difficulty = this.state.createGame.difficulty;
+        const playerName = this.state.createGame.playerName.length ? this.state.createGame.playerName : randomPlayer;
+ 
+        this.props.createGame(gameName,virusLevel,difficulty,playerName);
+        this.clearInputs();
+    }
+
     handleCreateSubmit(e) {
         e.preventDefault();
+        
         this.props.createGame(
                 this.state.createGame.gameName, 
                 this.state.createGame.virusLevel,
@@ -81,12 +91,12 @@ class GameForm extends React.Component {
         this.props.fetchGames();
     }
     handleGetSubmit(e) {
-        // console.log('handlGetSubmit')
         e.preventDefault();
         this.props.fetchGame(this.state.getGame.gameName);
         this.props.clearQueryString();
         this.clearInputs();
-        // 
+        window.scrollTo(0, 0);
+
     }
     handleJoinSubmit(e) {
         e.preventDefault();
@@ -96,12 +106,12 @@ class GameForm extends React.Component {
     handleDeleteSubmit(e) {
         e.preventDefault();
         this.clearInputs();
+        this.props.isGameActive(false);
         this.props.deleteGame(this.state.game.name);
         this.props.clearGames();
         this.props.fetchGames();
     }
     handleClearSubmit(e) {
-        // console.log('handlShowSubmit')
         e.preventDefault();
         this.props.clearGames();
         this.clearInputs();
@@ -127,13 +137,12 @@ class GameForm extends React.Component {
         }
     }
     updateGet(field) {
-        return (e) => {
+        return (e) => { 
         let games = this.state.games;
         
         let filtered = games.filter(game => {
             return game.name.toLowerCase().includes(e.target.value.toLowerCase())
         })
-        // debugger;
         this.props.receiveFilteredGames(filtered);
         this.props.receiveQueryString(e.target.value);
         this.setState({filteredGames: filtered})
@@ -179,12 +188,8 @@ class GameForm extends React.Component {
 
         return(
             <form onSubmit={this.handleCreateSubmit} className="create-form" >
-                <h4>create a new game</h4>
+                <h4>game options</h4>
                 {/* <label htmlFor="create-name">game name:</label> */}
-                <input type="text" id="create-name"
-                    value={this.state.createGame.gameName}
-                    onChange={this.updateCreate('gameName')} 
-                    placeholder="enter a name for your game"/>
 
                 {/* <label htmlFor="create-id">id:</label> */}
                 <input type="text" id="create-id"
@@ -217,14 +222,24 @@ class GameForm extends React.Component {
                     </ul>
                 </div>
 
-          
+                <button onClick={this.handleStartSubmit}>start singleplayer game</button>
+
+                <div className="divider">
+                    <hr />
+                    <span>OR</span>
+                </div>
+
+                <input type="text" id="create-name"
+                    value={this.state.createGame.gameName}
+                    onChange={this.updateCreate('gameName')}
+                    placeholder="enter a name for your game" />
 
                 <input type="text" id="create-player"
                     value={this.state.createGame.playerName}
                     onChange={this.updateCreate('playerName')} 
                     placeholder="enter your name"/>            
                             
-                <button type="submit">create game</button>
+                <button type="submit">create multiplayer game</button>
                 
             </form>
         )
@@ -232,7 +247,7 @@ class GameForm extends React.Component {
 
     renderShow() {
         const players = this.state.game.players;
-        
+
         return (
             <div className="show-join">
 
@@ -249,7 +264,7 @@ class GameForm extends React.Component {
                     <input type="text" value={this.state.game.virusLevel} disabled/>
 
                     <h5>difficulty level</h5>
-                    <input type="text" value={this.state.game.difficultyLevel} disabled/>
+                    <input type="text" value={this.state.game.difficulty} disabled/>
 
 
                     <h5>players</h5>
