@@ -155,17 +155,63 @@ class Game extends React.Component {
             for(let j =0; j< curRow.length; j++) {
                 if(curRow[j] != 0) {
                     if(curCount === 0) {
-                        curColor = curRow[j];
+                        if(curRow[j] === 4) {
+                            //set to red
+                            curColor = 3;
+                        }else if(curRow[j] === 5) {
+                            //set to blue
+                            curColor = 1;
+                        } else if (curRow[j] === 6) {
+                            //set to yellow
+                            curColor = 2;
+                        }else{
+                            curColor = curRow[j];
+                        }
                         curCount += 1;
                     } else {
-                        if(curColor === curRow[j]) {
+                        if(curColor === curRow[j] ||
+                            (curColor === 1 && curRow[j] === 5) ||
+                            (curColor === 2 && curRow[j] === 6) ||
+                            (curColor === 3 && curRow[j] === 4) 
+                            ) {
                             curCount+= 1;
                         }else {
                             curCount = 1;
-                            curColor = curRow[j];
+                            if(curRow[j] === 4) {
+                                //set to red
+                                curColor = 3;
+                            }else if(curRow[j] === 5) {
+                                //set to blue
+                                curColor = 1;
+                            } else if (curRow[j] === 6) {
+                                //set to yellow
+                                curColor = 2;
+                            }else{
+                                curColor = curRow[j];
+                            }
                         }
                     }
                     if(curCount === 4) {
+                        if(this.state.board[i][j] === 4 ||
+                            this.state.board[i][j] === 5 ||
+                            this.state.board[i][j] === 6) {
+                                this.state.initialBoard[i][j] = 0;
+                            }
+                            if(this.state.board[i][j-1] === 4 ||
+                                this.state.board[i][j-1] === 5 ||
+                                this.state.board[i][j-1] === 6) {
+                                    this.state.initialBoard[i][j-1] = 0;
+                                }
+                         if(this.state.board[i][j-2] === 4 ||
+                                    this.state.board[i][j-2] === 5 ||
+                                    this.state.board[i][j-2] === 6) {
+                                        this.state.initialBoard[i][j-2] = 0;
+                                    }
+                                    if(this.state.board[i][j-3] === 4 ||
+                                        this.state.board[i][j-3] === 5 ||
+                                        this.state.board[i][j-3] === 6) {
+                                            this.state.initialBoard[i][j-3] = 0;
+                                        }
                         for(let z = 0; z < pills.length; z++) {
 
                             if((pills[z].x === j-1 && pills[z].y) === i ||
@@ -207,17 +253,63 @@ class Game extends React.Component {
                 for( let j = 0; j< this.state.board.length ;j++) {
                     if(this.state.board[j][i] !== 0) {
                         if(curCount === 0) {
-                            curColor = this.state.board[j][i];
+                            if(this.state.board[j][i] === 4) {
+                                //set to red
+                                curColor = 3;
+                            }else if(this.state.board[j][i] === 5) {
+                                //set to blue
+                                curColor = 1;
+                            } else if (this.state.board[j][i] === 6) {
+                                //set to yellow
+                                curColor = 2;
+                            }else{
+                                curColor = this.state.board[j][i];
+                            }
                             curCount += 1;
                         } else {
-                            if(curColor === this.state.board[j][i]) {
+                                if(curColor === this.state.board[j][i] ||
+                                    (curColor === 1 && this.state.board[j][i] === 5) ||
+                                    (curColor === 2 && this.state.board[j][i] === 6) ||
+                                    (curColor === 3 && this.state.board[j][i] === 4) 
+                                    ){
                                 curCount+= 1;
                             }else {
                                 curCount = 1;
-                                curColor = this.state.board[j][i];
+                                if(this.state.board[j][i] === 4) {
+                                    //set to red
+                                    curColor = 3;
+                                }else if(this.state.board[j][i] === 5) {
+                                    //set to blue
+                                    curColor = 1;
+                                } else if (this.state.board[j][i] === 6) {
+                                    //set to yellow
+                                    curColor = 2;
+                                }else{
+                                    curColor = this.state.board[j][i];
+                                }
                             }
                         }
                         if(curCount === 4) {
+                            if(this.state.board[j][i] === 4 ||
+                                this.state.board[j][i] === 5 ||
+                                this.state.board[j][i] === 6) {
+                                    this.state.initialBoard[j][i] = 0;
+                                }
+                                if(this.state.board[j-1][i] === 4 ||
+                                    this.state.board[j-1][i] === 5 ||
+                                    this.state.board[j-1][i] === 6) {
+                                        this.state.initialBoard[j-1][i] = 0;
+                                    }
+                             if(this.state.board[j-2][i] === 4 ||
+                                        this.state.board[j-2][i] === 5 ||
+                                        this.state.board[j-2][i] === 6) {
+                                            this.state.initialBoard[j-2][i] = 0;
+                                        }
+                                        if(this.state.board[j-3][i] === 4 ||
+                                            this.state.board[j-3][i] === 5 ||
+                                            this.state.board[j-3][i] === 6) {
+                                                this.state.initialBoard[j-3][i] = 0;
+                                            }
                             for(let z = 0; z < pills.length; z++) {
                                 if((pills[z].x === i && pills[z].y) === j ||
                                     (pills[z].x === i && pills[z].y) === j-1 ||
