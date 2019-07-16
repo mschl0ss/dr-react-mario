@@ -24,10 +24,11 @@ class Game extends React.Component {
             pills: []
         }
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.checkCombo = this.checkCombo.bind(this);
     }
 
     componentDidMount() {
-        setInterval(() => this.computeGame(), 500);
+        setInterval(() => this.computeGame(), 200);
     }
 
 
@@ -97,11 +98,13 @@ class Game extends React.Component {
 
 
 
-         
+        this.checkCombo()     
 
          this.setState( {
              board:board
          })
+
+    
  
     }
 
@@ -115,7 +118,7 @@ class Game extends React.Component {
             (state.curPill2X === pill.x && state.curPill2Y+1 === pill.y) ||
             state.curPill1Y ===19 ||
             state.curPill2Y ===19) {
-                pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPull1C})
+                pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
                 
@@ -129,6 +132,92 @@ class Game extends React.Component {
         }
         
     }
+
+    checkCombo() {
+        let curCount = 0;
+        let curColor = 0;
+
+        //check rows
+        for(let i =0; i <  this.state.board.length; i++) {
+            let curRow = this.state.board[i];
+            curCount = 0;
+            curColor = 0;
+            for(let j =0; j< curRow.length; j++) {
+                if(curRow[j] != 0) {
+                    if(curCount === 0) {
+                        curColor = curRow[j];
+                        curCount += 1;
+                    } else {
+                        if(curColor === curRow[j]) {
+                            curCount+= 1;
+                        }else {
+                            curCount = 1;
+                            curColor = curRow[j];
+                        }
+                    }
+                    if(curCount === 4) {
+                        console.log("4 in a row")
+
+                    }
+                }else {
+                    curCount = 0;
+                    curColor = 0;
+                }
+            }
+        }
+
+        //check columns
+        if(this.state.board !== 0) {
+            
+            let pills = this.state.pills;
+            let pillFalling = this.state.pillFalling;
+        for(let i =0; i < 8; i++) {
+            curCount = 0;
+            curColor = 0;
+                for( let j = 0; j< this.state.board.length ;j++) {
+                    if(this.state.board[j][i] !== 0) {
+                        if(curCount === 0) {
+                            curColor = this.state.board[j][i];
+                            curCount += 1;
+                        } else {
+                            if(curColor === this.state.board[j][i]) {
+                                curCount+= 1;
+                            }else {
+                                curCount = 1;
+                                curColor = this.state.bozard[j][i];
+                            }
+                        }
+                        if(curCount === 4) {
+                            
+                            for(let z = 0; z < pills.length; z++) {
+                                if((pills[z].x === i && pills[z].y) === j ||
+                                    (pills[z].x === i && pills[z].y) === j-1 ||
+                                    (pills[z].x === i && pills[z].y) === j-2 ||
+                                    (pills[z].x === i && pills[z].y) === j-3 ) {
+                                        debugger;
+                                    pills.splice(z,1);
+                                    
+                                }
+                            }
+                            curCount = 0;
+                            curColor = 0;
+                           
+                    
+                        }
+                    }else {
+                        curCount = 0;
+                        curColor = 0;
+                    }
+                }
+            }
+            this.setState({
+                pills: pills,
+                pillFalling: pillFalling
+            })
+        }
+    }
+
+   
 
     handleKeyPress(e) {
         if(this.state.pillFalling){
@@ -179,24 +268,28 @@ class Game extends React.Component {
 
 
     renderSquares() {
+        let row = [];
             for (let i = 0; i < 20; i++) {
-                let row = [];
             for (let j = 0; j < 8; j++) {
+                if(this.state.board[i][j] === 0 ){
+                    row.push(<div></div>)
+                }
                 if (this.state.board[i][j] === 1) {
-                    row.push(<img className="pixel" src="b-pill.png" alt="" />)
+                    row.push(<img className="pixel" src="b-left.png" alt="" />)
                 }
                 if (this.state.board[i][j] === 2) {
-                    row.push(<img className="pixel" src="y-pill.png" alt="" />)
+                    row.push(<img className="pixel" src="y-right.png" alt="" />)
                 }
             }
         }
+        return row;
     }
 
 
     render() {
 
         if (this.state.board === 0) {
-            return 
+            return <div></div>
         }
     
         return (
@@ -206,6 +299,8 @@ class Game extends React.Component {
                 </div>
             </div>
         )  
+      
+        
     }
 }
 
