@@ -1,0 +1,56 @@
+#main-wrapper {
+    width: 1000px;
+    margin: 0 auto;
+}
+#main {
+    display: flex;
+}
+
+#main > * {
+    box-sizing: border-box;
+    min-height: 800px;
+}
+
+#main > aside {
+    width: 30%;
+    /* padding: 20px; */
+}
+
+#main > section {
+    width: 400px;
+}
+
+#main > aside > * {
+    /* padding: 0 10px; */
+}
+#main > aside > h3 {
+    font-size: 20px;
+    padding: 20px 0;
+    border-bottom: solid 1px black;
+}
+
+#main .left .details {
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+#main .left .details ul > li {
+    padding: 10px 0;
+}
+#main .left .details .labels {
+    width: 20%;
+    text-align: right;
+}
+
+#main .left .details .values {
+    width: 70%;
+}
+
+#main .left button {
+    margin: 20px 0;
+}
+#main .left form {
+    box-sizing: border-box;
+    border: solid 1px black;
+}
