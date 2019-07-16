@@ -41,7 +41,8 @@ class GameForm extends React.Component {
         this.handleGetSubmit = this.handleGetSubmit.bind(this);
         this.handleCreateSubmit = this.handleCreateSubmit.bind(this);
         this.handleJoinSubmit = this.handleJoinSubmit.bind(this);
-        this.handleShowSubmit = this.handleShowSubmit.bind(this);
+        this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
+        this.handleClearSubmit = this.handleClearSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -91,7 +92,13 @@ class GameForm extends React.Component {
         this.props.joinGame(this.state.game.name, this.state.joinGame.playerName)
         this.clearInputs();
     }
-    handleShowSubmit(e) {
+    handleDeleteSubmit(e) {
+        e.preventDefault();
+        debugger;
+        this.props.deleteGame(this.state.game.name);
+        // this.clearInputs();
+    }
+    handleClearSubmit(e) {
         // console.log('handlShowSubmit')
         e.preventDefault();
         this.props.clearGames();
@@ -262,8 +269,9 @@ class GameForm extends React.Component {
                         </div>
                     }
 
-                <button onClick={this.handleShowSubmit}>clear game</button>
-               
+                {/* <button onClick={this.handleClearSubmit}>clear game</button> */}
+                <button className="delete"onClick={this.handleDeleteSubmit}>delete game</button>
+                
                 </form>
             </div>
         )

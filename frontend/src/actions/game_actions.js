@@ -2,7 +2,7 @@ import * as gameUtil from '../utils/game_util';
 
 export const RECEIVE_GAME = 'RECEIVE_GAME';
 export const RECEIVE_GAMES = 'RECEIVE_GAMES';
-
+export const DELETE_GAME = 'DELETE_GAME';
 export const CLEAR_GAMES = 'CLEAR_GAMES';
 export const RECEIVE_GAME_ERRORS = 'RECEIVE_GAME_ERRORS';
 export const CLEAR_GAMES_ERRORS = 'CLEAR_GAMES_ERRORS';
@@ -18,6 +18,12 @@ export const receiveGames = games => ({
     games
 })
 
+export const deleteGameAction = game => {
+    debugger;
+    return ({
+    type: DELETE_GAME,
+    game
+})}
 export const clearGames = () => ({
     type: CLEAR_GAMES
 })
@@ -55,3 +61,12 @@ export const joinGame = (name, player) => dispatch => (
         .then(game => dispatch(receiveGame(game)),
         err => (dispatch(receiveGameErrors(err.response.data))))
 )
+
+export const deleteGame = name => dispatch => {
+    // debugger;
+    return (
+    gameUtil.deleteGame(name)
+        .then(game => dispatch(deleteGameAction(game)),
+        // err => (dispatch(receiveGameErrors(err.response.data))))
+        err => (console.log('error')))
+)}

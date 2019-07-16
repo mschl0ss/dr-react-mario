@@ -249,6 +249,10 @@ aside.main-left {
         -1px 1px 0 #888888,
          1px 1px 0 #888888;
 }
+.main-left .show-join button.delete {
+    background: #E50301;
+}
+
 
 .main-left .show-join [type=text]{
     font-size: 16px;

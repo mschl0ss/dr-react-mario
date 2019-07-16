@@ -185,8 +185,22 @@ router.patch('/', (req,res) => {
 })
 
 router.delete('/', (req,res) => {
-
-
+    Game.findOneAndRemove( {name: req.body.name} )
+        .then(game=> {
+            
+            if(game){
+                res.json({
+                    game: game,
+                })
+            }
+            else {
+                res.status(418).json({deleteGame: ["game not found"]})
+            }
+        })
+        .catch(err => {
+            res.status(420).json({ deleteGame: [err.message] })
+            }
+        );
 })
 
 module.exports = router;
