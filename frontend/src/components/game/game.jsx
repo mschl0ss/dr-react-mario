@@ -42,6 +42,7 @@ class Game extends React.Component {
             }
             board.push(row)
         }
+
         //update current pill position
         if (this.state.pillFalling === false) {
             //if there is no pill falling, set new piil
@@ -51,51 +52,11 @@ class Game extends React.Component {
             this.setState({
                 curPill1X: 3,
                 curPill1Y: 0,
-                curPill10: 'HL',
                 curPill2X: 4,
                 curPill2Y: 0,
-                curPill20: 'HR',
                 pillFalling: true,
                 orientation: 0
             });
- 
-         } else {
-             //if pill is falling, update it's position
-             this.setState ({
-                 curPill1X: this.state.curPill1X,
-                 curPill1Y: this.state.curPill1Y+1,
-                 curPill2X: this.state.curPill2X,
-                 curPill2Y: this.state.curPill2Y+1
-                }); 
-            
-                board[this.state.curPill1Y][this.state.curPill1X] = 1;
-                board[this.state.curPill2Y][this.state.curPill2X] = 2;
-                this.checkCollisionWithPills(this.state);
- 
-         }
-
-         // if pill hit the bottom of the board
-         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 ){
-             let pills = this.state.pills;
-
-             //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
-
-             pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
-             pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
-             this.setState({
-                 pillFalling: false,
-                 curPill1Y: 0,
-                 curPill2Y: 0, 
-                 pills: pills
-             })
-         }
-
-
-         //update board position for all pills
-         for (let i = 0; i < this.state.pills.length; i++) {
-            let pill = this.state.pills[i];
-            board[pill.y][pill.x] = pill.color;
-         }
 
         } else {
             //if pill is falling, update it's position
@@ -111,17 +72,16 @@ class Game extends React.Component {
             this.checkCollisionWithPills(this.state);
 
         }
+
         // if pill hit the bottom of the board
         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19) {
             let pills = this.state.pills;
+
             //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
-            pills.push({ x: this.state.curPill1X, y: this.state.curPill1Y, color: this.state.curPill1C }) //? orientation: 'HR'
-            pills.push({ x: this.state.curPill2X, y: this.state.curPill2Y, color: this.state.curPill2C })
 
-            //TODO adapt code => pills.push({ pos: [this.state.curPill1X, this.state.curPill1Y], color: this.state.curPill1C })
-            //TODO adapt code => pills.push({ pos: [this.state.curPill2X, this.state.curPill2Y], color: this.state.curPill2C })
+            pills.push({ x: this.state.curPill1X, y: this.state.curPill1Y, color: this.state.curPill1C, falling: false })
 
-
+            pills.push({ x: this.state.curPill2X, y: this.state.curPill2Y, color: this.state.curPill2C, falling: false })
             this.setState({
                 pillFalling: false,
                 curPill1Y: 0,
@@ -129,17 +89,26 @@ class Game extends React.Component {
                 pills: pills
             })
         }
+
+
         //update board position for all pills
         for (let i = 0; i < this.state.pills.length; i++) {
             let pill = this.state.pills[i];
             board[pill.y][pill.x] = pill.color;
         }
 
+
+
+        // this.checkCombo()
+        // this.updatePills();
+
         this.setState({
             board: board
         })
-
     }
+
+
+
     //check for pills colliding with pills
     checkCollisionWithPills(state) {
         let pills = this.state.pills;
@@ -289,7 +258,6 @@ class Game extends React.Component {
         if (this.state.board === 0) {
             return <div></div>
         }
-
 
 
         return (
