@@ -57,6 +57,9 @@ class GameForm extends React.Component {
         }
         if(prevProps.games !== this.props.games) {this.setState({games: this.props.games});}
         if(prevProps.errors !== this.props.errors) {}
+        if (this.state.gameActive === true && this.props.game.id !== "") {
+            this.props.isGameActive(true);
+        }
     }
 
     activateTab(tabIndex) {
@@ -66,7 +69,7 @@ class GameForm extends React.Component {
     handleStartSubmit(e) {
 
         if (arguments.length) e.preventDefault();
-        this.props.isGameActive(true);
+        this.setState({gameActive: true})
         const randomGame = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
         const randomPlayer = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
    
