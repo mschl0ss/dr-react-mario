@@ -59,9 +59,9 @@ function generateInitialState(virusLevel) {
     //k cool `shuffledSquares` is an array of the exact length and population
     //that we want for our board.  Now let's just loop around, create rows,
     //and add those rows to the board
-    for (let col = 0; col < 8; col++) {
-        const thisRow = [];
-        for (let row = 0; row < 20; row++) {
+    for (let row = 0; row < 20; row++) {
+        const thisCol = [];
+        for (let col = 0; col < 8; col++) {
 
             let pick = Math.floor(Math.random() * 16);
             while (usedPicks.includes(pick)) {
@@ -71,9 +71,9 @@ function generateInitialState(virusLevel) {
             if (!shuffledSquares[pick]) {
             }
             usedPicks.push(pick);
-            thisRow.push(shuffledSquares[pick]);
+            thisCol.push(shuffledSquares[pick]);
         }
-        board.push(thisRow);
+        board.push(thisCol);
     }
 
     // word.
@@ -185,6 +185,7 @@ router.patch('/', (req,res) => {
 })
 
 router.delete('/', (req,res) => {
+    // debugger;
     Game.findOneAndRemove( {name: req.body.name} )
         .then(game=> {
             

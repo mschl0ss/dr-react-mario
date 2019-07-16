@@ -19,7 +19,6 @@ export const receiveGames = games => ({
 })
 
 export const deleteGameAction = game => {
-    debugger;
     return ({
     type: DELETE_GAME,
     game

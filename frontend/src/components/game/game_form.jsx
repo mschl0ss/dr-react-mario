@@ -57,6 +57,7 @@ class GameForm extends React.Component {
             
         }
         if(prevProps.games !== this.props.games) {
+            // debugger;
             this.setState({games: this.props.games});
         }
         if(prevProps.errors !== this.props.errors) {
@@ -94,19 +95,21 @@ class GameForm extends React.Component {
     }
     handleDeleteSubmit(e) {
         e.preventDefault();
-        debugger;
+        this.clearInputs();
         this.props.deleteGame(this.state.game.name);
-        // this.clearInputs();
+        this.props.clearGames();
+        this.props.fetchGames();
     }
     handleClearSubmit(e) {
         // console.log('handlShowSubmit')
         e.preventDefault();
         this.props.clearGames();
         this.clearInputs();
+
     }
 
     clearInputs() {
-        const createGame = {playerName: '',gameName: ''}
+        const createGame = { playerName: '', gameName: '', difficulty: 'easy', virusLevel: 10,}
         const getGame = {gameName: ''}
         const joinGame = {playerName: ''}
         this.setState({createGame: createGame})

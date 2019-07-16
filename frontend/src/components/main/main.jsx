@@ -18,7 +18,7 @@ class Main extends React.Component {
 
     // componentDidUpdate(prevProps) {
     //     if(prevProps.keyPresses !== this.props.keyPresses) {
-    //         //check which key changed
+            // check which key changed
     //         //if left send the hardcoded keycode for left to the handle key press event
     //     }
     // }
