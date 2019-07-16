@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import GameFormContainer from './game/game_form_container';
 import GameIndexContainer from './game/game_index_container';
 import Board from './board/board';
+import Game from './game/game';
 import GameContainer from './game/game_container';
 import Main from './main/main';
 

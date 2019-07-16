@@ -24,7 +24,6 @@ class GameIndex extends React.Component {
     }
     componentDidMount(){
         this.props.clearGames();
-        console.log('index mounted')
         this.props.fetchGames();
     }
 
@@ -64,9 +63,12 @@ class GameIndex extends React.Component {
         ))
         const searchHeader = this.state.queryString.length ? <>{`search ${this.state.queryString} => ${this.state.filteredGames.length} results`} </>: null 
         return (
-            <div className="games-index">
+            <div className="games-index-wrapper">
                 <h4 className="search-header" >{searchHeader}</h4>
-                {games}
+                <div className="games-index">
+                
+                    {games}
+                </div>
             </div>
         )
     }

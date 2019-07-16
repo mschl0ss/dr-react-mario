@@ -88,7 +88,14 @@ router.get('/all', (req,res) => {
             const seedValues = [];
             for (let i = 0; i < 30; i++) seedValues.push(rng.nextInt(0, 30));
             
-            return {name: game.name, _id: game.id, players: game.players, seedValues}
+            return {
+                name: game.name,
+                id: game.id,
+                players: game.players,
+                difficulty: game.difficulty,
+                virusLevel: game.virusLevel,
+                initialState: generateInitialState(game.virusLevel),
+                seedValues: seedValues,}
         })
         res.json({
             games: theGames
