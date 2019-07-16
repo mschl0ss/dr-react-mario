@@ -417,7 +417,6 @@ class Game extends React.Component {
         
         return (
             <div id="content">
-                <h1>Player {this.state.currentPlayer}'s turn</h1>
                 <div onKeyDown={this.handleKeyPress} tabIndex="0" className="main-grid">
                     {this.renderSqrs()}
                 </div>
