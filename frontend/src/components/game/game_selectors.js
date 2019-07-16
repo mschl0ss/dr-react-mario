@@ -17,3 +17,7 @@ export const extractBoard = state => {
     }
     return board;
 }
+
+//blue is 1
+//red is 3
+//yellow is 2
