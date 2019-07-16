@@ -101,11 +101,9 @@ class Game extends React.Component {
             board[pill.y][pill.x] = pill.color;
         }
         
-        this.checkCombo()   
-        this.updatePills();  
-
-
-
+        this.setState({
+            board: board
+        })
 
 
         this.checkCombo()     
@@ -258,127 +256,17 @@ class Game extends React.Component {
         let pills = this.state.pills;
         let pillFalling = true;
 
-       
-        for (let i = 0; i < state.pills.length; i++) {
-            let pill = state.pills[i];
-             //! Vertical Collisions
-            if ((state.curPill1X === pill.x && state.curPill1Y+1 === pill.y) || (state.curPill2X === pill.x && state.curPill2Y + 1 === pill.y) || 
-                state.curPill1Y ===19 || state.curPill2Y ===19) {
-
+        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) || 
+            (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
 
                 this.setState({
                     pills: pills,
-                    pillFalling: pillFalling //? you mean pillFalling: false
+                    pillFalling: pillFalling 
                 })
-                return;
-            }
-        }
-    }
-
-    checkCombo() {
-        let curCount = 0;
-        let curColor = 0;
-        let pills = this.state.pills;
-        let pillFalling = this.state.pillFalling;
-        //check rows
-        for(let i =0; i <  this.state.board.length; i++) {
-            let curRow = this.state.board[i];
-            curCount = 0;
-            curColor = 0;
-            for(let j =0; j< curRow.length; j++) {
-                if(curRow[j] !== 0) {
-                    if(curCount === 0) {
-                        curColor = curRow[j];
-                        curCount += 1;
-                    } else {
-                        if(curColor === curRow[j]) {
-                            curCount+= 1;
-                        }else {
-                            curCount = 1;
-                            curColor = curRow[j];
-                        }
-                    }
-                    if(curCount === 4) {
-                        // console.log("4 in a row")
-                        for (let z = 0; z < pills.length; z++) {
-
-                            if ((pills[z].x === j - 1 && pills[z].y) === i ||
-                                (pills[z].x === j - 2 && pills[z].y) === i ||
-                                (pills[z].x === j - 3 && pills[z].y) === i ||
-                                (pills[z].x === j && pills[z].y) === i) {
-
-                                pills.splice(z, 1);
-                                z = 0;
-                            }
-                        }
-                        curCount = 0;
-                        curColor = 0;
-                    }
-                }else {
-                    curCount = 0;
-                    curColor = 0;
-                }
-            }
-        }
-
-        //check columns
-        this.setState({
-            pills: pills,
-            pillFalling: pillFalling
-        })
-        
-        if(this.state.board !== 0) {
-            
-            let pills = this.state.pills;
-            let pillFalling = this.state.pillFalling;
-        for(let i =0; i < 8; i++) {
-            curCount = 0;
-            curColor = 0;
-                for( let j = 0; j< this.state.board.length ;j++) {
-                    if(this.state.board[j][i] !== 0) {
-                        if(curCount === 0) {
-                            curColor = this.state.board[j][i];
-                            curCount += 1;
-                        } else {
-                            if(curColor === this.state.board[j][i]) {
-                                curCount+= 1;
-                            }else {
-                                curCount = 1;
-                                curColor = this.state.board[j][i];
-                            }
-                        }
-
-                        if(curCount === 4) {
-                            
-                            for(let z = 0; z < pills.length; z++) {
-                                if((pills[z].x === i && pills[z].y) === j ||
-                                    (pills[z].x === i && pills[z].y) === j-1 ||
-                                    (pills[z].x === i && pills[z].y) === j-2 ||
-                                    (pills[z].x === i && pills[z].y) === j-3 ) {
-
-                                    pills.splice(z,1);
-                                    z = 0; 
-                                    
-                                }
-                            }
-                            curCount = 0;
-                            curColor = 0;
-                           
-                    
-                        }
-                    }else {
-                        curCount = 0;
-                        curColor = 0;
-                    }
-                }
-            }
-            this.setState({
-                pills: pills,
-                pillFalling: pillFalling
-            })
+            return;
         }
     }
 
@@ -483,7 +371,17 @@ class Game extends React.Component {
                     rows.push(<img className="pixel" src="y-down.png" alt="" />)
                 }
 
-            }   
+                  
+                if (this.state.board[row][col] === 4) {
+                    rows.push(<img className="pixel" src="r-virus.png" alt="" />)
+                }
+                if (this.state.board[row][col] === 5) {
+                    rows.push(<img className="pixel" src="b-virus.png" alt="" />)
+                }
+                if (this.state.board[row][col] === 6) {
+                    rows.push(<img className="pixel" src="y-virus.png" alt="" />)
+                }
+            }
         }
         return rows; 
     }
