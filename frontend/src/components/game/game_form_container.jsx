@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import GameForm from './game_form';
-import { fetchGame,fetchGames, createGame,
+import { fetchGame,fetchGames, createGame, deleteGame,
      joinGame, clearGames, clearGamesErrors } from '../../actions/game_actions';
 import {
         receiveFilteredGames, 
@@ -19,8 +19,9 @@ const msp = state => {
 const mdp = dispatch => ({
     fetchGame: name => dispatch(fetchGame(name)),
     fetchGames: () => dispatch(fetchGames()),
-    createGame: (name,player) => dispatch(createGame(name,player)),
+    createGame: (name, virusLevel, difficulty, player) => dispatch(createGame(name, virusLevel, difficulty, player)),
     joinGame: (name,player) => dispatch(joinGame(name,player)),
+    deleteGame: name => dispatch(deleteGame(name)),
     clearGames: () => dispatch(clearGames()),
     clearGamesErrors: () => dispatch(clearGamesErrors()),
     receiveFilteredGames: games => dispatch(receiveFilteredGames(games)),

@@ -27,3 +27,10 @@ export const joinGame = (name, player) => (
         player
     })
 )
+
+export const deleteGame = name => {
+    return (
+    axios.delete('/api/games', {
+        data: {name}
+    })
+)}

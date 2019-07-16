@@ -3,6 +3,9 @@
 /* #475572, */
 /* #dae3ef */
 
+/* globals */
+.red-bg {background:#c40303}
+
 body {
     background-position: 0px 0px, 10px 10px;
     background-size: 20px 20px;
@@ -26,8 +29,6 @@ body {
     width: 1400px;
     margin: 0 auto;
     z-index: 5;
-    
-
 }
 
 .main-wrapper header {

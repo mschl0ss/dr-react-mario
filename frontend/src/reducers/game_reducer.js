@@ -1,6 +1,7 @@
 import { RECEIVE_GAME, CLEAR_GAMES } from '../actions/game_actions';
 
 export default function (state = {}, action) {
+    // debugger;
     Object.freeze(state);
     switch (action.type) {
         case RECEIVE_GAME:
