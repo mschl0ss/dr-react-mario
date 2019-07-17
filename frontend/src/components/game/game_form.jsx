@@ -82,7 +82,7 @@ class GameForm extends React.Component {
         const playerName = this.state.createGame.playerName.length ? this.state.createGame.playerName : randomPlayer;
  
         this.props.createGame(gameName,virusLevel,difficulty,playerName);
-        this.clearInputs();
+        setTimeout(this.clearInputs(), 1000);
     }
 
     handleCreateSubmit(e) {
@@ -93,7 +93,7 @@ class GameForm extends React.Component {
                 this.state.createGame.virusLevel,
                 this.state.createGame.difficulty,
                 this.state.createGame.playerName)
-        this.clearInputs();
+        setTimeout(this.clearInputs(), 1000);
         this.props.fetchGames();
     }
     handleGetSubmit(e) {
@@ -328,7 +328,7 @@ class GameForm extends React.Component {
         const activeTab = this.state.activeTab;
         return (
             <>
-               
+                
                 <ul className={this.props.errors.length ? "errors" : "errors blank"} id="errors">
                     {errors}
                     {this.props.errors.length ? <button 

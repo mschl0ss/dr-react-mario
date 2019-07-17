@@ -25,27 +25,48 @@
 /* 24.126778784% on each side  */
 
 
-.game-board{
 
+.game-board {
     width: 560px;
-
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0;
 }
 
 /* GAME BOARD CURTAIN */
 
+.bottle.body {
+    width: 425px;
+    min-height: 600px;
+    max-height: 800px;
+    border: double 10px #888888;
+    box-sizing: border-box;
+    background: white;
+    overflow: hidden;
+
+}
+.curtain {
+    background: black;
+    color: #e5e5e5;
+    height: 100vw;
+    padding-top: 70px;
+}
+
+.curtain .virus {
+    width: 50px;
+    height: 50px;
+}
+
+.curtain .virus-row {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+}
 
 /* game board will be 720 high */
 
 
 
-.game-board figure {
-    width: 560px;
-    overflow: hidden;
-    margin: 0;
-}
 
-.game-board figure img{
-    display: block;
-    width: 100%;
-    margin: -24.126% 0;
-}
+

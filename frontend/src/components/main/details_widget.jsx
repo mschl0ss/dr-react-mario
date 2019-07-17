@@ -7,7 +7,7 @@ class DetailsWidget extends React.Component {
     render() {
         return(
             <div className="details-widget">
-                <h3>Controls</h3>
+                <h3>controls</h3>
 
                 <p>
                     Eliminate the viruses before your beaker overflows.  Lining up

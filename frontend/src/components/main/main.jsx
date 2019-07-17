@@ -44,7 +44,7 @@ class Main extends React.Component {
                 <div className="main">
                     
                     <aside className="main-left">
-                        <h3>Multiplayer</h3>
+                        <h3>settings</h3>
                         <GameFormContainer />
                     </aside>
                     
@@ -56,7 +56,11 @@ class Main extends React.Component {
                                     <img src="board-mock.png" alt="board wireframe"/>
                                 </figure> */}
                                 {/* { this.state.activeGame === true ? <div>game</div>: <Curtain />} */}
-                                { this.state.activeGame === true ? <GameContainer /> : <Curtain />}
+                                
+                                   
+                                <div className="bottle body">
+                                    { this.state.activeGame === true ? <GameContainer /> : <Curtain />}
+                                </div>
                                
 
 
