@@ -10,6 +10,7 @@ class GameForm extends React.Component {
                 players: [],
                 seedValues: []
             },
+            gameActive: false,
             activeTab: 1,
             errors: [],
             createGame: {
@@ -287,7 +288,7 @@ class GameForm extends React.Component {
                         <input type="text" 
                             value={this.state.joinGame.playerName} 
                             onChange={this.updateJoin('playerName')}
-                            disabled={this.state.gameActive ? "false" :"true"} />
+                            />
                             {this.state.gameActive ? null :<input type="submit" 
                                 value="join game" />}
                         </div>

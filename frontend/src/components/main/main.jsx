@@ -22,6 +22,7 @@ class Main extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        console.log(this.state);
         if(prevProps.activeGame !== this.props.activeGame) {
             this.setState({activeGame: this.props.activeGame})
         }
