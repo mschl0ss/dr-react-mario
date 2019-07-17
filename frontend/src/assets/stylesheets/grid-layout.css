@@ -8,7 +8,7 @@
 .main-grid {
     display: grid; 
     grid-template-columns: repeat(8, 50px); 
-    grid-template-rows: repeat(20, 50px); 
+    grid-template-rows: repeat(16, 50px); 
     grid-gap: 1px;
     background-color: black;
 }
@@ -87,7 +87,12 @@
 .virus.blue .mouth {border-radius: 0 0 5px 5px;width:55%; height: 4px;}
 
 .yellow{background:#feef00}
-.yellow-border{border-color:#feef00}
+.yellow-border{border-color:#feef00; border: 0;
+    border-top-right-radius: 40px;
+    border-top-left-radius: 40px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
 .yellow .eyes div {
     background: #52A6FE;
 }
