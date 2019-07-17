@@ -32,19 +32,19 @@ class Game extends React.Component {
             gameOver: false
          
         }
+
+        this.state.socket = io(socketURL);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.checkCombo = this.checkCombo.bind(this);
     }
 
     openRoom(){
-        const socket = io(socketURL);
+        // const socket = io(socketURL);
         // const socket = io('http://localhost:5000');
         
-        if (process.env.NODE_ENV === "production") {
-            socketURL = "https://starfight.herokuapp.com/";
-        }
-        let { game } = this.props.gameName;
-        socket.emit("open_room", {data: game})
+        
+        let game = this.props.gameName;
+        this.state.socket.emit("open_room", {data: game})
     }
     componentDidMount() {
         if (this.state.board !== undefined) {
@@ -65,7 +65,11 @@ class Game extends React.Component {
 
                 setInterval(() => this.computeGame(), 200);
             }
-            const socket = io('http://localhost:5000');
+            if (process.env.NODE_ENV === "production") {
+                socketURL = "https://dr-react-mario.herokuapp.com/";
+                this.setState({socket: io(socketURL)})
+            }
+            const socket = io(socketURL);
             socket.on("FromAPI", (data) => {
                 this.setState({
                     pillFalling: data.pillFalling, curPill1X: data.curPill1X, curPill1Y: data.curPill1Y, curPill2C: data.curPill2C,
@@ -79,9 +83,9 @@ class Game extends React.Component {
 
     }
     send = () => {
-        const socket = io('http://localhost:5000');
+        // const socket = io('http://localhost:5000');
         const { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard, curPill10, curPill20 } = this.state;
-        socket.emit('toAPI', { data: { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard, curPill10, curPill20 } })
+        this.state.socket.emit('toAPI', { data: { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard, curPill10, curPill20 } })
     }
 
 

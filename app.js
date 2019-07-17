@@ -45,9 +45,10 @@ let socketList = {}
 let room;
 io.on("connection", socket => {
  
-    socket.on("open_room", data => {
+    socket.on("open_room", ({data}) => {
        
-        room = data.game
+        room = data
+        socket.join(room);
     })
     // socketList[socket.id] = socket // just added
     socket.join(room);
