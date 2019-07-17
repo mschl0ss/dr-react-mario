@@ -15,11 +15,11 @@ class Game extends React.Component {
             pillFalling: false,
             curPill1X: 3,
             curPill1Y: 0,
-            curPill1C: 1,
+            curPill1C: this.props.colors[0].left, // Changed
             curPill10: 'HL',
             curPill2X: 4,
             curPill2Y: 0,
-            curPill2C: 2,
+            curPill2C: this.props.colors[0].right,
             curPill20: 'HR',
             orientation: 0,
             initialBoard: this.props.board,
@@ -31,7 +31,7 @@ class Game extends React.Component {
     }
 
     componentDidMount() {
-        if(this.state.board != undefined){
+        if(this.state.board !== undefined){
         setInterval(() => this.computeGame(), 500);
         }
     }
@@ -50,8 +50,13 @@ class Game extends React.Component {
         //update current pill position
         if (this.state.pillFalling === false) {
             //if there is no pill falling, set new piil
-            board[this.state.curPill1Y][this.state.curPill1X] = 1;
-            board[this.state.curPill2Y][this.state.curPill2X] = 2;
+            this.setState({
+                curPill1C: this.props.colors.shift([0]).left, 
+                curPill2C: this.props.colors.shift([0]).right
+            })
+
+            board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
+            board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
 
             this.setState({
                 curPill1X: 3,
@@ -71,8 +76,9 @@ class Game extends React.Component {
                 curPill2Y: this.state.curPill2Y + 1
             });
 
-            board[this.state.curPill1Y][this.state.curPill1X] = 1;
-            board[this.state.curPill2Y][this.state.curPill2X] = 2;
+            board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
+            board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
+
             this.checkCollisionWithPills(this.state);
 
         }
@@ -153,7 +159,7 @@ class Game extends React.Component {
             curCount = 0;
             curColor = 0;
             for(let j =0; j< curRow.length; j++) {
-                if(curRow[j] != 0) {
+                if(curRow[j] !== 0) {
                     if(curCount === 0) {
                         if(curRow[j] === 4) {
                             //set to red
@@ -350,6 +356,7 @@ class Game extends React.Component {
 
         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) || 
             (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
+                // debugger 
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
@@ -462,6 +469,18 @@ class Game extends React.Component {
                 if (board[row][col] === 2 && pillOrientation2 === 'VD') { //* YELLOW DOWN
                     rows.push(<img className="pixel" src="y-down.png" alt="" />)
                 }
+                if (board[row][col] === 3 && pillOrientation2 === 'HL') { //* RED LEFT
+                    rows.push(<img className="pixel" src="r-left.png" alt="" />)
+                }
+                if (board[row][col] === 3 && pillOrientation2 === 'HR') { //* RED LEFT
+                    rows.push(<img className="pixel" src="r-right.png" alt="" />)
+                }
+                if (board[row][col] === 3 && pillOrientation2 === 'VU') { //* RED UP
+                    rows.push(<img className="pixel" src="r-up.png" alt="" />)
+                }
+                if (board[row][col] === 3 && pillOrientation2 === 'VD') { //* RED DOWN
+                    rows.push(<img className="pixel" src="r-down.png" alt="" />)
+                }
 
                   
                 if (this.state.board[row][col] === 4) {
@@ -486,7 +505,7 @@ class Game extends React.Component {
             return <div></div>
         }
 
-
+        // debugger
         return (
             <div id="content">
                 <div onKeyDown={this.handleKeyPress} tabIndex="0" className="main-grid">
