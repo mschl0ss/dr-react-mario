@@ -32,7 +32,7 @@ class Game extends React.Component {
 
     componentDidMount() {
         if(this.state.board !== undefined){
-        setInterval(() => this.computeGame(), 500);
+        setInterval(() => this.computeGame(), 1000);
         }
     }
 
@@ -406,16 +406,20 @@ class Game extends React.Component {
                     })
                 } else if (this.state.orientation === 1) {
                     this.setState({
-                        curPill2X: this.state.curPill2X - 1,
+                        curPill2X: this.state.curPill2X,
                         curPill2Y: this.state.curPill2Y + 1,
+                        curPill1X: this.state.curPill1X + 1,
+                        curPill1Y: this.state.curPill1Y,
                         curPill10: 'HR',
                         curPill20: 'HL',
                         orientation: 2
                     })
                 } else if (this.state.orientation === 2) {
                     this.setState({
-                        curPill2X: this.state.curPill2X + 1,
-                        curPill2Y: this.state.curPill2Y + 1,
+                        curPill2X: this.state.curPill2X ,
+                        curPill2Y: this.state.curPill2Y ,
+                        curPill1X: this.state.curPill1X -1,
+                        curPill1Y: this.state.curPill1Y -1,
                         curPill10: 'VU',
                         curPill20: 'VD',
                         orientation: 3
@@ -423,7 +427,9 @@ class Game extends React.Component {
                 } else if (this.state.orientation === 3) {
                     this.setState({
                         curPill2X: this.state.curPill2X + 1,
-                        curPill2Y: this.state.curPill2Y - 1,
+                        curPill2Y: this.state.curPill2Y,
+                        curPill1X: this.state.curPill1X,
+                        curPill1Y: this.state.curPill1Y + 1,
                         curPill10: 'HL',
                         curPill20: 'HR',
                         orientation: 0

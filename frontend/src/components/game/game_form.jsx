@@ -320,11 +320,11 @@ class GameForm extends React.Component {
 
     render() {
 
-        const errors = this.props.errors.length? this.props.errors[0].map((error,i) => {
-            return(
-            <li key={i}>{error}</li>
-        )}) : null;
-        
+        // const errors = this.props.errors.length? this.props.errors[0].map((error,i) => {
+        //     return(
+        //     <li key={i}>{error}</li>
+        // )}) : null;
+        const errors = <></>;
         const activeTab = this.state.activeTab;
         return (
             <>
