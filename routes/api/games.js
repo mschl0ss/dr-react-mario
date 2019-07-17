@@ -77,7 +77,6 @@ function generateInitialState(virusLevel) {
     }
 
     // word.
-    console.log(board.length)
     return board;
      
 }
