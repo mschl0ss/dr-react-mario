@@ -32,7 +32,7 @@ class Curtain extends React.Component {
     }
 
     startBlankGame() {
-        // debugger;
+        debugger;
         this.setState({gameActive: true});
         const randomGame = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
         const randomPlayer = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();

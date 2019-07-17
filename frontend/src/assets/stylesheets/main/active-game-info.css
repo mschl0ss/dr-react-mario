@@ -1,0 +1,25 @@
+
+.info {
+    height: 338px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+
+.info h4 {
+    text-align: center; 
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 50%;
+}
+.info h4 span {font-size: 48px;}
+.info .end {
+    background-color: #E50301;
+}
+
+.red-text { }

@@ -13,7 +13,9 @@ const msp = state => {
     return ({
         game: state.game,
         games: state.games,
-        errors: Object.values(state.errors)
+        errors: Object.values(state.errors),
+        activeGame: state.ui.activeGame,
+
     })
 };
 

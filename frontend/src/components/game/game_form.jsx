@@ -1,5 +1,6 @@
 import React from 'react';
 import GameIndexContainer from './game_index_container';
+import ActiveGameInfo from '../main/active_game_info';
 
 class GameForm extends React.Component {
 
@@ -345,7 +346,8 @@ class GameForm extends React.Component {
                     <li>search or join a game</li>
                     <li>controls</li>
                 </ul> */}
-                {this.state.game.name ? this.renderShow() : this.renderCreate()}
+                {this.props.activeGame === true ? <ActiveGameInfo /> :
+                    this.state.game.name ? this.renderShow() : this.renderCreate()} 
                 {this.renderFindGame()}
                
 

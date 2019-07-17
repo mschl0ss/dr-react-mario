@@ -1,6 +1,6 @@
 import {RECEIVE_SCORE} from '../../actions/ui_actions';
 
-export default function (state = {}, action) {
+export default function (state = 0, action) {
     Object.freeze(state);
     switch (action.type) {
         case RECEIVE_SCORE:
