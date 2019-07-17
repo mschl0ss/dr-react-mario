@@ -112,7 +112,8 @@ class Game extends React.Component {
         }
 
         // if pill hit the bottom of the board
-        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19) {
+        // if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19) {
+        if (this.state.curPill1Y === 15 || this.state.curPill2Y === 15) {
             let pills = this.state.pills;
 
             //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
@@ -152,8 +153,8 @@ class Game extends React.Component {
 
     updatePills() {
         let pills = this.state.pills;
-        for (let i = 0; i < pills.length; i++) {
-            if (pills[i].falling === true && pills[i].y < 19 && this.state.board[pills[i].y + 1][pills[i].x] === 0) {
+        for(let i =0 ;i < pills.length; i++) {
+            if(pills[i].falling === true && pills[i].y < 15 && this.state.board[pills[i].y+1][pills[i].x] === 0) {
                 pills[i].y = pills[i].y + 1;
             }
         }
@@ -386,7 +387,7 @@ class Game extends React.Component {
         let pills = this.state.pills;
         let pillFalling = true;
 
-        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) ||
+        if (this.state.curPill1Y === 15 || this.state.curPill2Y === 15 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) || 
             (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
                 // debugger 
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
@@ -480,7 +481,7 @@ class Game extends React.Component {
         let pillOrientation2 = this.state.curPill20; 
         let style={background: "orange"}
 
-        for (let row = 0; row < 20; row ++) {
+        for (let row = 0; row < 16; row ++) {
             for (let col = 0; col < 8; col ++) {
                 if (board[row][col] === 0 ) {
                     rows.push(<div></div>)
