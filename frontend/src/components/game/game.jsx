@@ -27,6 +27,7 @@ class Game extends React.Component {
             board: 0,
             pills: [],
             multiplayer: false,
+            gameOver: false
          
         }
         this.handleKeyPress = this.handleKeyPress.bind(this);
@@ -41,9 +42,23 @@ class Game extends React.Component {
     }
     componentDidMount() {
         if (this.state.board !== undefined) {
+            this.props.sendRunning(true)
             
             this.openRoom();
-            setInterval(() => this.computeGame(), 500);
+            if(this.props.difficulty === "easy"){
+
+                setInterval(() => this.computeGame(), 700);
+            }
+
+            if(this.props.difficulty === "medium"){
+
+                setInterval(() => this.computeGame(), 500);
+            }
+
+            if(this.props.difficulty === "hard"){
+
+                setInterval(() => this.computeGame(), 200);
+            }
             const socket = io('http://localhost:5000');
             socket.on("FromAPI", (data) => {
                 this.setState({
@@ -65,89 +80,113 @@ class Game extends React.Component {
 
 
     computeGame() {
-        //Generate empty board
-        let board = [];
-        for (let i = 0; i < this.state.initialBoard.length; i++) {
-            let row = [];
-            for (let j = 0; j < 8; j++) {
-                row.push(this.state.initialBoard[i][j]);
+        if(!this.state.gameOver){
+            this.calculateScore();
+            //Generate empty board
+            let board = [];
+            for (let i = 0; i < this.state.initialBoard.length; i++) {
+                let row = [];
+                for (let j = 0; j < 8; j++) {
+                    row.push(this.state.initialBoard[i][j]);
+                }
+                board.push(row);
             }
-            board.push(row);
-        }
 
-        //update current pill position
-        if (this.state.pillFalling === false) {
-            //if there is no pill falling, set new piil
+            //update current pill position
+            if (this.state.pillFalling === false) {
+                //if there is no pill falling, set new piil
+                this.setState({
+                    curPill1C: this.props.colors.shift([0]).left, 
+                    curPill2C: this.props.colors.shift([0]).right
+                })
+
+                board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
+                board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
+
+                this.setState({
+                    curPill1X: 3,
+                    curPill1Y: 0,
+                    curPill2X: 4,
+                    curPill2Y: 0,
+                    pillFalling: true,
+                    orientation: 0
+                });
+
+            } else {
+                //if pill is falling, update it's position
+                this.setState({
+                    curPill1X: this.state.curPill1X,
+                    curPill1Y: this.state.curPill1Y + 1,
+                    curPill2X: this.state.curPill2X,
+                    curPill2Y: this.state.curPill2Y + 1
+                });
+
+                board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
+                board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
+
+                this.checkCollisionWithPills(this.state);
+
+            }
+
+            // if pill hit the bottom of the board
+            if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19) {
+                let pills = this.state.pills;
+
+                //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
+
+                pills.push({ x: this.state.curPill1X, y: this.state.curPill1Y, color: this.state.curPill1C, falling: false })
+
+                pills.push({ x: this.state.curPill2X, y: this.state.curPill2Y, color: this.state.curPill2C, falling: false })
+                this.setState({
+                    pillFalling: false,
+                    curPill1Y: 0,
+                    curPill2Y: 0,
+                    pills: pills
+                })
+            }
+
+
+            //update board position for all pills
+            for (let i = 0; i < this.state.pills.length; i++) {
+                let pill = this.state.pills[i];
+                board[pill.y][pill.x] = pill.color;
+            }
+
             this.setState({
-                curPill1C: this.props.colors.shift([0]).left, 
-                curPill2C: this.props.colors.shift([0]).right
+                board: board
             })
 
-            board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
-            board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
+
+            this.checkCombo()
 
             this.setState({
-                curPill1X: 3,
-                curPill1Y: 0,
-                curPill2X: 4,
-                curPill2Y: 0,
-                pillFalling: true,
-                orientation: 0
-            });
-
-        } else {
-            //if pill is falling, update it's position
-            this.setState({
-                curPill1X: this.state.curPill1X,
-                curPill1Y: this.state.curPill1Y + 1,
-                curPill2X: this.state.curPill2X,
-                curPill2Y: this.state.curPill2Y + 1
-            });
-
-            board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
-            board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
-
-            this.checkCollisionWithPills(this.state);
+                board: board
+            })
 
         }
 
-        // if pill hit the bottom of the board
-        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19) {
-            let pills = this.state.pills;
+    }
 
-            //? if x and y relate to positions, wouldnt it be easier to store them as one: like {pos: [this.state.curPill1X, this.state.curPill1Y] color: color:this.state.curPill1C}
+    calculateScore() {
+        let score = 0;
+        for(let i = 0; i < this.state.board.length; i++) {
+            for(let j =0; j< this.state.board[i].length;j++) {
+                if(this.state.board[i][j] === 4 ||
+                    this.state.board[i][j] === 5 ||
+                    this.state.board[i][j] === 6 ){
+                        score += 1;
+                    }
+            }
+        }
 
-            pills.push({ x: this.state.curPill1X, y: this.state.curPill1Y, color: this.state.curPill1C, falling: false })
-
-            pills.push({ x: this.state.curPill2X, y: this.state.curPill2Y, color: this.state.curPill2C, falling: false })
+        if(score === 0 && this.state.board !== 0) {
+            debugger;
+            this.props.sendRunning(false)
             this.setState({
-                pillFalling: false,
-                curPill1Y: 0,
-                curPill2Y: 0,
-                pills: pills
+                gameOver: true
             })
         }
-
-
-        //update board position for all pills
-        for (let i = 0; i < this.state.pills.length; i++) {
-            let pill = this.state.pills[i];
-            board[pill.y][pill.x] = pill.color;
-        }
-
-        this.setState({
-            board: board
-        })
-
-
-        this.checkCombo()
-
-        this.setState({
-            board: board
-        })
-
-
-
+        this.props.sendScore(score);
     }
 
     updatePills() {
@@ -388,7 +427,13 @@ class Game extends React.Component {
 
         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) ||
             (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
-                // debugger 
+                         
+                            if(this.state.curPill1Y <= 1 || this.state.curPill2Y <= 1) {
+                                this.props.sendRunning(false);
+                                    this.setState ({
+                                        gameOver: true,
+                                    })
+                                }
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
@@ -398,6 +443,7 @@ class Game extends React.Component {
                     pills: pills,
                     pillFalling: pillFalling 
                 })
+                
             return;
         }
     }
@@ -406,6 +452,7 @@ class Game extends React.Component {
 
     handleKeyPress(e) {
         // debugger 
+        e.preventDefault();
         let nextState = {};
         if (this.state.pillFalling) {
             //move pill to left

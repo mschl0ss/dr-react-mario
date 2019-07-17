@@ -8,6 +8,7 @@ export const RECEIVE_GAME_ERRORS = 'RECEIVE_GAME_ERRORS';
 export const CLEAR_GAMES_ERRORS = 'CLEAR_GAMES_ERRORS';
 
 
+
 export const receiveGame = game => ({
     type: RECEIVE_GAME,
     game

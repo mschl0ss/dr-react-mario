@@ -1,4 +1,4 @@
-import { RECEIVE_GAME, CLEAR_GAMES } from '../actions/game_actions';
+import { RECEIVE_GAME, CLEAR_GAMES, RECEIVE_SCORE } from '../actions/game_actions';
 
 export default function (state = {}, action) {
     // debugger;
