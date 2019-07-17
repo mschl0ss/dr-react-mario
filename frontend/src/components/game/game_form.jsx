@@ -111,10 +111,10 @@ class GameForm extends React.Component {
     handleDeleteSubmit(e) {
         e.preventDefault();
         this.clearInputs();
-        this.props.isGameActive(false);
         this.props.deleteGame(this.state.game.name);
         this.props.clearGames();
         this.props.fetchGames();
+        this.props.isGameActive(false);
     }
     handleClearSubmit(e) {
         e.preventDefault();
@@ -286,16 +286,18 @@ class GameForm extends React.Component {
                         <div className="text-button">
                         <input type="text" 
                             value={this.state.joinGame.playerName} 
-                            onChange={this.updateJoin('playerName')} />
-                        <input type="submit" 
-                            value="join game" />
+                            onChange={this.updateJoin('playerName')}
+                            disabled={this.state.gameActive ? "false" :"true"} />
+                            {this.state.gameActive ? null :<input type="submit" 
+                                value="join game" />}
                         </div>
                     }
 
                 {/* <button onClick={this.handleClearSubmit}>clear game</button> */}
-                <div class="buttons">
+                <div className="buttons">
+                    {/* <button className="delete" onClick={() => this.setState({ gameActive: true })}>delete</button> */}
                     <button className="delete"onClick={this.handleDeleteSubmit}>delete</button>
-                    <button onClick={this.handleStartSubmit}>start game</button>
+                    {this.state.gameActive ? null : <button onClick={this.handleStartSubmit}>start game</button>}
                 </div>
                 </form>
             </div>
