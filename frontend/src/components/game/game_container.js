@@ -2,9 +2,12 @@ import {connect} from 'react-redux';
 import {extractBoard}  from './game_selectors';
 import Game from './game';
 
-const mapStateToProps = state => ({
-    board: extractBoard(state)
-})
+const mapStateToProps = state => {
+    return {  
+    board: extractBoard(state),
+    gameName: state.game.name
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
 
