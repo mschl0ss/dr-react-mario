@@ -40,22 +40,33 @@ const io = socketIo(server); // < Interesting!
 
 
 let interval;
-
+let socketList = {}
+let room;
 io.on("connection", socket => {
-    socket.join('some room');
-
-    socket.on('toAPI', function (someArg) {
-        if (someArg.data.currentPlayer === 0) {
-            someArg.data.currentPlayer = 1
-        } else {
-            someArg.data.currentPlayer = 0
-        };
-        io.to("some room").emit("FromAPI", someArg.data)
-    });
-    socket.on('player_change', function(someArg) {
-        
-        io.to("some_room").emit("change_player", someArg.data)
+ 
+    socket.on("open_room", data => {
+       
+        room = data.game
     })
+    // socketList[socket.id] = socket // just added
+    socket.join(room);
+    debugger;
+    // socket.on("twoPlayer", data => {
+    //     multiplayer = socketList.length > 1 ? true : false;
+    //     io.emit("twoPlayer", data);
+    //     console.log(socketList)
+    //     console.log(data)
+    // })
+    socket.on('toAPI', function (someArg) {
+        // if (someArg.data.currentPlayer === 0) {
+        //     someArg.data.currentPlayer = 1
+        // } else {
+        //     someArg.data.currentPlayer = 0
+        // };
+        
+        io.to(room).emit("FromAPI", someArg.data)
+    });
+   
 
 
     console.log("New client connected");
