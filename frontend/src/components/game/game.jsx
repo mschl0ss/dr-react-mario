@@ -9,6 +9,8 @@ import io from 'socket.io-client';
 //     color: pill color,
 //     orientation: HR, HL, VU, VD 
 // }
+
+let socketURL = 'http://localhost:5000';
 class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -34,8 +36,12 @@ class Game extends React.Component {
     }
 
     openRoom(){
-        const socket = io('http://localhost:5000');
+        const socket = io(socketURL);
+        // const socket = io('http://localhost:5000');
         
+        if (process.env.NODE_ENV === "production") {
+            socketURL = "https://starfight.herokuapp.com/";
+        }
         let { game } = this.props.gameName;
         socket.emit("open_room", {data: game})
     }
