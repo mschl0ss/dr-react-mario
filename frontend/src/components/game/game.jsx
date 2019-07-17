@@ -1,5 +1,5 @@
 import React from 'react';
-import io from "socket.io-client";
+import io from 'socket.io-client';
 // import Cell from './cell'
 
 // Pill structure:
@@ -26,46 +26,50 @@ class Game extends React.Component {
             initialBoard: this.props.board,
             board: 0,
             pills: [],
-            currentPlayer: 0
+            multiplayer: false,
+         
         }
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.checkCombo = this.checkCombo.bind(this);
     }
 
+    openRoom(){
+        const socket = io('http://localhost:5000');
+        
+        let { game } = this.props.gameName;
+        socket.emit("open_room", {data: game})
+    }
     componentDidMount() {
-        if(this.state.board != undefined){
-            const socket = io('http://localhost:5000')
+        if (this.state.board !== undefined) {
             
-            socket.on("FromAPI", (data) => {
-                this.setState({ pillFalling: data.pillFalling, curPill1X: data.curPill1X, curPill1Y: data.curPill1Y, curPill2C: data.curPill2C, 
-                    curPill2X: data.curPill2X, curPill2Y: data.curPill2Y, curPill1C: data.curPill1C, 
-                    board: data.board, pills: data.pills, orientation: data.orientation, initialBoard: data.initialBoard});
-                });
-                this.send();
-                
-                socket.on("change_player", (data) => {
-                    this.setState({ currentPlayer: data.currentPlayer })
-            });
+            this.openRoom();
             setInterval(() => this.computeGame(), 500);
+            const socket = io('http://localhost:5000');
+            socket.on("FromAPI", (data) => {
+                this.setState({
+                    pillFalling: data.pillFalling, curPill1X: data.curPill1X, curPill1Y: data.curPill1Y, curPill2C: data.curPill2C,
+                    curPill2X: data.curPill2X, curPill2Y: data.curPill2Y, curPill1C: data.curPill1C,
+                    board: data.board, pills: data.pills, orientation: data.orientation, initialBoard: data.initialBoard,
+                    curPill20: data.curPill20, curPill10: data.curPill10
+                });
+            });
+            this.send();
         }
-        
-            
-        
-      }
-   
+
+    }
     send = () => {
-        const socket = io('http://localhost:5000')
-        const { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard } = this.state;
-        socket.emit('toAPI', { data: { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard} })
+        const socket = io('http://localhost:5000');
+        const { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard, curPill10, curPill20 } = this.state;
+        socket.emit('toAPI', { data: { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard, curPill10, curPill20 } })
     }
 
 
     computeGame() {
         //Generate empty board
         let board = [];
-        for(let i = 0; i< this.state.initialBoard.length; i++) {
+        for (let i = 0; i < this.state.initialBoard.length; i++) {
             let row = [];
-            for(let j = 0;j< 8 ;j++){
+            for (let j = 0; j < 8; j++) {
                 row.push(this.state.initialBoard[i][j]);
             }
             board.push(row);
@@ -104,8 +108,7 @@ class Game extends React.Component {
             board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
 
             this.checkCollisionWithPills(this.state);
-            
-            // this.sendPlayerChange();
+
         }
 
         // if pill hit the bottom of the board
@@ -132,33 +135,37 @@ class Game extends React.Component {
             board[pill.y][pill.x] = pill.color;
         }
 
+        this.setState({
+            board: board
+        })
 
-        this.checkCombo()     
 
-         this.setState({
-             board:board
-         })
+        this.checkCombo()
 
-    
- 
+        this.setState({
+            board: board
+        })
+
+
+
     }
 
     updatePills() {
         let pills = this.state.pills;
-        for(let i =0 ;i < pills.length; i++) {
-            if(pills[i].falling === true && pills[i].y < 19 && this.state.board[pills[i].y+1][pills[i].x] === 0) {
+        for (let i = 0; i < pills.length; i++) {
+            if (pills[i].falling === true && pills[i].y < 19 && this.state.board[pills[i].y + 1][pills[i].x] === 0) {
                 pills[i].y = pills[i].y + 1;
             }
         }
         this.setState({
-            pills:pills
+            pills: pills
         })
     }
-    dropColumn(i,j) {
+    dropColumn(i, j) {
         let board = this.state.board;
         let pills = this.state.pills;
-        for(let x = 0; x< pills.length; x++) {
-            if(pills[x].x === i && pills[x].y < j) {
+        for (let x = 0; x < pills.length; x++) {
+            if (pills[x].x === i && pills[x].y < j) {
                 pills[x].falling = true;
             }
         }
@@ -166,7 +173,7 @@ class Game extends React.Component {
         this.setState({
             pills: pills
         })
-        
+
     }
 
     checkCombo() {
@@ -179,76 +186,76 @@ class Game extends React.Component {
             let curRow = this.state.board[i];
             curCount = 0;
             curColor = 0;
-            for(let j =0; j< curRow.length; j++) {
-                if(curRow[j] !== 0) {
-                    if(curCount === 0) {
-                        if(curRow[j] === 4) {
+            for (let j = 0; j < curRow.length; j++) {
+                if (curRow[j] !== 0) {
+                    if (curCount === 0) {
+                        if (curRow[j] === 4) {
                             //set to red
                             curColor = 3;
-                        }else if(curRow[j] === 5) {
+                        } else if (curRow[j] === 5) {
                             //set to blue
                             curColor = 1;
                         } else if (curRow[j] === 6) {
                             //set to yellow
                             curColor = 2;
-                        }else{
+                        } else {
                             curColor = curRow[j];
                         }
                         curCount += 1;
                     } else {
-                        if(curColor === curRow[j] ||
+                        if (curColor === curRow[j] ||
                             (curColor === 1 && curRow[j] === 5) ||
                             (curColor === 2 && curRow[j] === 6) ||
-                            (curColor === 3 && curRow[j] === 4) 
-                            ) {
-                            curCount+= 1;
-                        }else {
+                            (curColor === 3 && curRow[j] === 4)
+                        ) {
+                            curCount += 1;
+                        } else {
                             curCount = 1;
-                            if(curRow[j] === 4) {
+                            if (curRow[j] === 4) {
                                 //set to red
                                 curColor = 3;
-                            }else if(curRow[j] === 5) {
+                            } else if (curRow[j] === 5) {
                                 //set to blue
                                 curColor = 1;
                             } else if (curRow[j] === 6) {
                                 //set to yellow
                                 curColor = 2;
-                            }else{
+                            } else {
                                 curColor = curRow[j];
                             }
                         }
                     }
-                    if(curCount === 4) {
-                        if(this.state.board[i][j] === 4 ||
+                    if (curCount === 4) {
+                        if (this.state.board[i][j] === 4 ||
                             this.state.board[i][j] === 5 ||
                             this.state.board[i][j] === 6) {
-                                this.state.initialBoard[i][j] = 0;
-                            }
-                            if(this.state.board[i][j-1] === 4 ||
-                                this.state.board[i][j-1] === 5 ||
-                                this.state.board[i][j-1] === 6) {
-                                    this.state.initialBoard[i][j-1] = 0;
-                                }
-                         if(this.state.board[i][j-2] === 4 ||
-                                    this.state.board[i][j-2] === 5 ||
-                                    this.state.board[i][j-2] === 6) {
-                                        this.state.initialBoard[i][j-2] = 0;
-                                    }
-                                    if(this.state.board[i][j-3] === 4 ||
-                                        this.state.board[i][j-3] === 5 ||
-                                        this.state.board[i][j-3] === 6) {
-                                            this.state.initialBoard[i][j-3] = 0;
-                                        }
-                        for(let z = 0; z < pills.length; z++) {
+                            this.state.initialBoard[i][j] = 0;
+                        }
+                        if (this.state.board[i][j - 1] === 4 ||
+                            this.state.board[i][j - 1] === 5 ||
+                            this.state.board[i][j - 1] === 6) {
+                            this.state.initialBoard[i][j - 1] = 0;
+                        }
+                        if (this.state.board[i][j - 2] === 4 ||
+                            this.state.board[i][j - 2] === 5 ||
+                            this.state.board[i][j - 2] === 6) {
+                            this.state.initialBoard[i][j - 2] = 0;
+                        }
+                        if (this.state.board[i][j - 3] === 4 ||
+                            this.state.board[i][j - 3] === 5 ||
+                            this.state.board[i][j - 3] === 6) {
+                            this.state.initialBoard[i][j - 3] = 0;
+                        }
+                        for (let z = 0; z < pills.length; z++) {
 
-                            if((pills[z].x === j-1 && pills[z].y) === i ||
-                                (pills[z].x === j -2 && pills[z].y) === i ||
-                                (pills[z].x === j -3 && pills[z].y) === i ||
-                                (pills[z].x === j && pills[z].y) === i ) {
-                                
-                                pills.splice(z,1);
-                                z=0;
-                                
+                            if ((pills[z].x === j - 1 && pills[z].y) === i ||
+                                (pills[z].x === j - 2 && pills[z].y) === i ||
+                                (pills[z].x === j - 3 && pills[z].y) === i ||
+                                (pills[z].x === j && pills[z].y) === i) {
+
+                                pills.splice(z, 1);
+                                z = 0;
+
                             }
                         }
                         curCount = 0;
@@ -265,83 +272,89 @@ class Game extends React.Component {
 
             }
 
-        //check columns
-        if(this.state.board !== 0) {
-            
-            let pills = this.state.pills;
-            let pillFalling = this.state.pillFalling;
-        for ( let i =0; i < 8; i++) {
-            curCount = 0;
-            curColor = 0;
-                for( let j = 0; j < this.state.board.length ;j++) {
-                    if(this.state.board[j][i] !== 0) {
-                        if(curCount === 0) {
-                            if(this.state.board[j][i] === 4) {
-                                //set to red
-                                curColor = 3;
-                            }else if(this.state.board[j][i] === 5) {
-                                //set to blue
-                                curColor = 1;
-                            } else if (this.state.board[j][i] === 6) {
-                                //set to yellow
-                                curColor = 2;
-                            }else{
-                                curColor = this.state.board[j][i];
-                            }
-                            curCount += 1;
-                        } else {
-                                if(curColor === this.state.board[j][i] ||
-                                    (curColor === 1 && this.state.board[j][i] === 5) ||
-                                    (curColor === 2 && this.state.board[j][i] === 6) ||
-                                    (curColor === 3 && this.state.board[j][i] === 4) 
-                                    ){
-                                curCount+= 1;
-                            }else {
-                                curCount = 1;
-                                if(this.state.board[j][i] === 4) {
+            this.setState({
+                pills: pills
+            })
+
+            //check columns
+            if (this.state.board !== 0) {
+
+                let pills = this.state.pills;
+                let pillFalling = this.state.pillFalling;
+                for (let i = 0; i < 8; i++) {
+                    curCount = 0;
+                    curColor = 0;
+                    for (let j = 0; j < this.state.board.length; j++) {
+                        if (this.state.board[j][i] !== 0) {
+                            if (curCount === 0) {
+                                if (this.state.board[j][i] === 4) {
                                     //set to red
                                     curColor = 3;
-                                }else if(this.state.board[j][i] === 5) {
+                                } else if (this.state.board[j][i] === 5) {
                                     //set to blue
                                     curColor = 1;
                                 } else if (this.state.board[j][i] === 6) {
                                     //set to yellow
                                     curColor = 2;
-                                }else{
+                                } else {
                                     curColor = this.state.board[j][i];
                                 }
+                                curCount += 1;
+                            } else {
+                                if (curColor === this.state.board[j][i] ||
+                                    (curColor === 1 && this.state.board[j][i] === 5) ||
+                                    (curColor === 2 && this.state.board[j][i] === 6) ||
+                                    (curColor === 3 && this.state.board[j][i] === 4)
+                                ) {
+                                    curCount += 1;
+                                } else {
+                                    curCount = 1;
+                                    if (this.state.board[j][i] === 4) {
+                                        //set to red
+                                        curColor = 3;
+                                    } else if (this.state.board[j][i] === 5) {
+                                        //set to blue
+                                        curColor = 1;
+                                    } else if (this.state.board[j][i] === 6) {
+                                        //set to yellow
+                                        curColor = 2;
+                                    } else {
+                                        curColor = this.state.board[j][i];
+                                    }
+                                }
                             }
-                        }
-                        if(curCount === 4) {
-                            if(this.state.board[j][i] === 4 ||
-                                this.state.board[j][i] === 5 ||
-                                this.state.board[j][i] === 6) {
+                            if (curCount === 4) {
+                                if (this.state.board[j][i] === 4 ||
+                                    this.state.board[j][i] === 5 ||
+                                    this.state.board[j][i] === 6) {
                                     this.state.initialBoard[j][i] = 0;
                                 }
-                                if(this.state.board[j-1][i] === 4 ||
-                                    this.state.board[j-1][i] === 5 ||
-                                    this.state.board[j-1][i] === 6) {
-                                        this.state.initialBoard[j-1][i] = 0;
+                                if (this.state.board[j - 1][i] === 4 ||
+                                    this.state.board[j - 1][i] === 5 ||
+                                    this.state.board[j - 1][i] === 6) {
+                                    this.state.initialBoard[j - 1][i] = 0;
+                                }
+                                if (this.state.board[j - 2][i] === 4 ||
+                                    this.state.board[j - 2][i] === 5 ||
+                                    this.state.board[j - 2][i] === 6) {
+                                    this.state.initialBoard[j - 2][i] = 0;
+                                }
+                                if (this.state.board[j - 3][i] === 4 ||
+                                    this.state.board[j - 3][i] === 5 ||
+                                    this.state.board[j - 3][i] === 6) {
+                                    this.state.initialBoard[j - 3][i] = 0;
+                                }
+                                for (let z = 0; z < pills.length; z++) {
+                                    if ((pills[z].x === i && pills[z].y) === j ||
+                                        (pills[z].x === i && pills[z].y) === j - 1 ||
+                                        (pills[z].x === i && pills[z].y) === j - 2 ||
+                                        (pills[z].x === i && pills[z].y) === j - 3) {
+
+                                        pills.splice(z, 1);
+                                        z = 0;
+
                                     }
-                             if(this.state.board[j-2][i] === 4 ||
-                                        this.state.board[j-2][i] === 5 ||
-                                        this.state.board[j-2][i] === 6) {
-                                            this.state.initialBoard[j-2][i] = 0;
-                                        }
-                                        if(this.state.board[j-3][i] === 4 ||
-                                            this.state.board[j-3][i] === 5 ||
-                                            this.state.board[j-3][i] === 6) {
-                                                this.state.initialBoard[j-3][i] = 0;
-                                            }
-                            for(let z = 0; z < pills.length; z++) {
-                                if((pills[z].x === i && pills[z].y) === j ||
-                                    (pills[z].x === i && pills[z].y) === j-1 ||
-                                    (pills[z].x === i && pills[z].y) === j-2 ||
-                                    (pills[z].x === i && pills[z].y) === j-3 ) {
-                                    
-                                    pills.splice(z,1);
-                                    z=0;
-                                    
+                                    this.dropColumn(i, j)
                                 }
                                 curCount = 0;
                                 curColor = 0;
@@ -361,16 +374,19 @@ class Game extends React.Component {
             }
         }
     }
-}
 
-   
+
+    
+    
+
+
 
     //check for pills colliding with pills
     checkCollisionWithPills(state) {
         let pills = this.state.pills;
         let pillFalling = true;
 
-        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) || 
+        if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) ||
             (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
                 // debugger 
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
@@ -385,20 +401,27 @@ class Game extends React.Component {
             return;
         }
     }
-
+    
     // TODO => Add this for horizontal collisions (this.state.curPill1Y === pill.y && this.state.curPill1X + 1 === pill.x) || (this.state.curPill2Y === pill.y && this.state.curPill2X + 1 === pill.x)
 
     handleKeyPress(e) {
+        // debugger 
         let nextState = {};
         if (this.state.pillFalling) {
             //move pill to left
-            if (e.keyCode === 37) {
+
+            if (e.keyCode === 37 && this.state.curPill1X !== 0 && this.state.curPill2X !== 0 &&
+                this.state.board[this.state.curPill1Y][this.state.curPill1X - 1] === 0) {
+
                 nextState = {
                     curPill2X: this.state.curPill2X - 1,
                     curPill1X: this.state.curPill1X - 1,
                 }
+
                 //move pill to right
-            } else if (e.keyCode === 39) {
+            } else if (e.keyCode === 39 && this.state.curPill1X !== 7 && this.state.curPill2X !== 7 &&
+                this.state.board[this.state.curPill2Y][this.state.curPill2X + 1] === 0) {
+
                 nextState = {
                     curPill2X: this.state.curPill2X + 1,
                     curPill1X: this.state.curPill1X + 1,
@@ -440,14 +463,15 @@ class Game extends React.Component {
                         orientation: 0
                     }
                 }
+                // this.computeGame();
             }
             this.setState(nextState, () => {
-
-               this.send();
-            });
+                this.send();
+            })
         }
     }
-    
+
+
 
     renderSqrs() {
         let rows = []; 
@@ -514,7 +538,7 @@ class Game extends React.Component {
                 }
             }
         }
-        return rows; 
+        return rows;
     }
 
 
@@ -526,16 +550,15 @@ class Game extends React.Component {
         }
 
 
-        
         return (
             <div id="content">
                 <div onKeyDown={this.handleKeyPress} tabIndex="0" className="main-grid">
                     {this.renderSqrs()}
                 </div>
             </div>
-        )  
-      
-        
+        )
+
+
     }
 }
 export default Game;
