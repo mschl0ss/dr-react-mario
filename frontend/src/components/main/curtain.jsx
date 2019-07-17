@@ -32,6 +32,7 @@ class Curtain extends React.Component {
     }
 
     startBlankGame() {
+        debugger;
         this.setState({gameActive: true});
         const randomGame = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
         const randomPlayer = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
@@ -50,11 +51,11 @@ class Curtain extends React.Component {
         console.log(this.props)
         return (
             <div>
-                <p>set options on the left and then hit</p>
+                <p>set options on the left and then hit the big blue button to begin</p>
 
-                    <button onClick={() => this.startBlankGame()}>start game</button>
+                    {/* <button onClick={() => this.startBlankGame()}>start game</button> */}
 
-                <p>to begin!</p>
+               
             </div>
         )
     }
