@@ -60,6 +60,8 @@ class GameForm extends React.Component {
         if (this.state.gameActive === true && this.props.game.id !== "") {
             this.props.isGameActive(true);
         }
+        if(prevProps.games !== this.props.games) {this.setState({games: this.props.games});}
+        if(prevProps.errors !== this.props.errors) {}
     }
 
     activateTab(tabIndex) {
@@ -291,8 +293,10 @@ class GameForm extends React.Component {
                     }
 
                 {/* <button onClick={this.handleClearSubmit}>clear game</button> */}
-                <button className="delete"onClick={this.handleDeleteSubmit}>delete game</button>
-                
+                <div class="buttons">
+                    <button className="delete"onClick={this.handleDeleteSubmit}>delete</button>
+                    <button onClick={this.handleStartSubmit}>start game</button>
+                </div>
                 </form>
             </div>
         )
