@@ -14,7 +14,7 @@ code {
     monospace;
 }
 
-#content {
+/* #content {
     display: flex; 
     height: 100vh; 
     justify-content: center; 
@@ -32,6 +32,6 @@ code {
 }
 .virus, .pixel {
     grid-column: span 1; 
-}
+} */
 
 
