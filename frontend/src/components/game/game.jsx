@@ -36,6 +36,7 @@ class Game extends React.Component {
         }
     }
 
+
     computeGame() {
         //Generate empty board
         let board = [];
@@ -439,58 +440,63 @@ class Game extends React.Component {
         let board = this.state.board; 
         let pillOrientation1 = this.state.curPill10; 
         let pillOrientation2 = this.state.curPill20; 
+        let style={background: "orange"}
 
         for (let row = 0; row < 20; row ++) {
             for (let col = 0; col < 8; col ++) {
                 if (board[row][col] === 0 ) {
                     rows.push(<div></div>)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'HL') { //* BLUE LEFT
-                    rows.push(<img className="pixel" src="b-left.png" alt="" />)
+                if (board[row][col] === 1 ) { //* BLUE LEFT
+                    // rows.push(<img className="pixel" src="b-left.png" alt="" />)
+                    rows.push(<div className="pixel pill blue"/>)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'HR') { //* BLUE RIGHT
-                    rows.push(<img className="pixel" src="b-right.png" alt="" />)
+               
+                if (board[row][col] === 2) { //* YELLOW LEFT
+                    // rows.push(<img className="pixel" src="y-left.png" alt="" />)
+                    rows.push(<div className="pixel pill yellow" />)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'VU') { //* BLUE UP
-                    rows.push(<img className="pixel" src="b-up.png" alt="" />)
+                
+                if (board[row][col] === 3 && pillOrientation2) { //* RED LEFT
+                    // rows.push(<img className="pixel" src="r-left.png" alt="" />)
+                    rows.push(<div className="pixel pill red" />)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'VD') { //* BLUE DOWN
-                    rows.push(<img className="pixel" src="b-down.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'HL') { //* YELLOW LEFT
-                    rows.push(<img className="pixel" src="y-left.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'HR') { //* YELLOW LEFT
-                    rows.push(<img className="pixel" src="y-right.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'VU') { //* YELLOW UP
-                    rows.push(<img className="pixel" src="y-up.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'VD') { //* YELLOW DOWN
-                    rows.push(<img className="pixel" src="y-down.png" alt="" />)
-                }
-                if (board[row][col] === 3 && pillOrientation2 === 'HL') { //* RED LEFT
-                    rows.push(<img className="pixel" src="r-left.png" alt="" />)
-                }
-                if (board[row][col] === 3 && pillOrientation2 === 'HR') { //* RED LEFT
-                    rows.push(<img className="pixel" src="r-right.png" alt="" />)
-                }
-                if (board[row][col] === 3 && pillOrientation2 === 'VU') { //* RED UP
-                    rows.push(<img className="pixel" src="r-up.png" alt="" />)
-                }
-                if (board[row][col] === 3 && pillOrientation2 === 'VD') { //* RED DOWN
-                    rows.push(<img className="pixel" src="r-down.png" alt="" />)
-                }
-
                   
                 if (this.state.board[row][col] === 4) {
-                    rows.push(<img className="pixel" src="r-virus.png" alt="" />)
+                    // rows.push(<img className="pixel" src="r-virus.png" alt="" />)
+                    rows.push(
+                        <div className="pixel virus red red-border">
+                            <div className="eyes">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="mouth"></div>
+                        </div>
+                    )
                 }
                 if (this.state.board[row][col] === 5) {
-                    rows.push(<img className="pixel" src="b-virus.png" alt="" />)
+                    // rows.push(<img className="pixel" src="b-virus.png" alt="" />)
+                    rows.push(
+                        <div className="pixel virus blue blue-border">
+                            <div className="eyes">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="mouth"></div>
+                        </div>
+                    )
                 }
                 if (this.state.board[row][col] === 6) {
-                    rows.push(<img className="pixel" src="y-virus.png" alt="" />)
+                    // rows.push(<img className="pixel" src="y-virus.png" alt="" />)
+                    rows.push(
+                        <div className="pixel virus yellow yellow-border">
+                            <div className="eyes">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="mouth"></div>
+                        </div>
+                    )
                 }
             }
         }

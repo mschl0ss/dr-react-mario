@@ -9,14 +9,89 @@
     display: grid; 
     grid-template-columns: repeat(8, 50px); 
     grid-template-rows: repeat(20, 50px); 
-    background-color: black
+    grid-gap: 1px;
+    background-color: black;
 }
 .virus, .pixel {
-    width: 100%
+    width: 100%;
+    /* box-sizing: border-box; */
+    border: solid 20px black;;
 }
 .virus, .pixel {
     grid-column: span 1; 
 }
+
+.pill {
+    border-radius: 15px;
+    /* box-shadow: inset 0px 0px 9px 0px #888888; */
+    box-shadow: inset 0px 0px 3px 0px #eaeaea;
+    border: solid 1px #888888;
+    /* opacity: .8; */
+}
+
+.virus {
+    border: solid 3px #1e1e1e;
+    /* border-radius: 0 0 15px 15px; */
+    box-sizing: border-box;
+    box-shadow: inset 0px 0px 8px 0px #6d6d6d;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    opacity: .8;
+    align-items: center;
+}
+
+.eyes {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 1px 0;
+    /* background: black; */
+    height: 16px;
+    width: 50px;
+}
+
+.mouth {
+    width: 60%;
+    height: 6px;
+    background: black;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin: 3px 0;
+}
+.eyes div{
+    /* border-style: solid; */
+    border-width: 1px;
+    height: 10px;
+    width: 16px;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+
+.eyes div:first-child {
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+}
+.eyes div:last-child {
+    border-top-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+}
+
+/* .blue {background:#6576f2} */
+.blue {background:#3F52F4}
+.blue-border {border-color:#1d53f4}
+.blue .eyes div {background: #F8EF18}
+.virus.blue {border-radius: 20px 20px 30px 30px; box-shadow: inset 0px 0px 9px 0px #bcb638;}
+.virus.blue .mouth {width: 40%;}
+.yellow{background:#feef00}
+.yellow-border{border-color:#feef00}
+.yellow .eyes div {background: #52A6FE;}
+
+.red{background:#E50301;}
+.red-border{border-color:#ad0101;}
+.red .eyes div {border-color: #1e1e1e; background: #52A6FE;}
+.virus.red {border-radius: 20px;}
+
 
 
 
