@@ -109,7 +109,7 @@ router.get('/', (req, res) => {
         if(game) {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 5; i++) seedValues.push(rng.nextInt(0, 9));
+            for (let i = 0; i < seedCount; i++) seedValues.push(rng.nextInt(0, 9));
             res.json({
                 name: game.name,
                 id: game.id,
