@@ -81,7 +81,7 @@ router.get('/all', (req,res) => {
         const theGames = games.map(game => {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 30; i++) seedValues.push(rng.nextInt(0, 30));
+            for (let i = 0; i < 30; i++) seedValues.push(rng.nextInt(0, 9));
             
             return {
                 name: game.name,
@@ -106,7 +106,7 @@ router.get('/', (req, res) => {
         if(game) {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
+            for (let i = 0; i < 1000; i++) seedValues.push(rng.nextInt(0, 9));
             res.json({
                 name: game.name,
                 id: game.id,
@@ -139,7 +139,7 @@ router.post('/', (req,res) => {
         .then(game => {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
+            for (let i = 0; i < 1000; i++) seedValues.push(rng.nextInt(0, 9));
             res.json({
                 name: game.name,
                 id: game.id,
@@ -171,7 +171,7 @@ router.patch('/', (req,res) => {
                 .then(game=>{
                     let rng = new Prando(game.id);
                     const seedValues = [];
-                    for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
+                    for (let i = 0; i < 1000; i++) seedValues.push(rng.nextInt(0, 9));
                     res.json({
                         name: game.name,
                         id: game.id,
