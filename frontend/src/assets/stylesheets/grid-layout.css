@@ -8,7 +8,7 @@
 .main-grid {
     display: grid; 
     grid-template-columns: repeat(8, 50px); 
-    grid-template-rows: repeat(20, 50px); 
+    grid-template-rows: repeat(16, 50px); 
     background-color: black
 }
 .virus, .pixel {
