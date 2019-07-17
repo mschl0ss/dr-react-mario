@@ -49,30 +49,26 @@ function generateInitialState(virusLevel) {
     }
 
     //now we combine and shuffle the blank and virus arrays
-    const allSquares = virusSquares.concat(blankSquares);
-    const shuffledSquares = shuffle(allSquares);
 
-    const usedPicks = [];
+    const topIsBlank = blankSquares.slice(0,65);
+    const bottomHasViruses = shuffle(virusSquares.concat(blankSquares.slice(65)))
+    const shuffledSquares = topIsBlank.concat(bottomHasViruses);
+
     const board = [];
 
     
     //k cool `shuffledSquares` is an array of the exact length and population
     //that we want for our board.  Now let's just loop around, create rows,
     //and add those rows to the board
+
     for (let row = 0; row < 20; row++) {
         const thisCol = [];
         for (let col = 0; col < 8; col++) {
 
-            let pick = Math.floor(Math.random() * 16);
-            while (usedPicks.includes(pick)) {
-                pick = Math.floor(Math.random() * 160);
+            thisCol.push(shuffledSquares.shift());
 
-            }
-            if (!shuffledSquares[pick]) {
-            }
-            usedPicks.push(pick);
-            thisCol.push(shuffledSquares[pick]);
         }
+        
         board.push(thisCol);
     }
 
