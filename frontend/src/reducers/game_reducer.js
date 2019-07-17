@@ -7,7 +7,8 @@ export default function (state = {}, action) {
         case RECEIVE_GAME:
             return action.game.data;
         case CLEAR_GAMES:
-            return {id: '', name: '', players: [], seedValues:[]};
+            return {id: '', name: '', players: [], seedValues:[], virusLevel: 10,
+                    initialState: []};
         default:
             return state;
     }

@@ -16,11 +16,11 @@ class Game extends React.Component {
             pillFalling: false,
             curPill1X: 3,
             curPill1Y: 0,
-            curPill1C: 1,
+            curPill1C: this.props.colors[0].left, // Changed
             curPill10: 'HL',
             curPill2X: 4,
             curPill2Y: 0,
-            curPill2C: 2,
+            curPill2C: this.props.colors[0].right,
             curPill20: 'HR',
             orientation: 0,
             initialBoard: this.props.board,
@@ -59,6 +59,7 @@ class Game extends React.Component {
         socket.emit('toAPI', { data: { pillFalling, curPill1X, curPill1Y, curPill2C, curPill2X, curPill2Y, curPill1C, board, pills, orientation, initialBoard} })
     }
 
+
     computeGame() {
         //Generate empty board
         let board = [];
@@ -73,8 +74,13 @@ class Game extends React.Component {
         //update current pill position
         if (this.state.pillFalling === false) {
             //if there is no pill falling, set new piil
-            board[this.state.curPill1Y][this.state.curPill1X] = 1;
-            board[this.state.curPill2Y][this.state.curPill2X] = 2;
+            this.setState({
+                curPill1C: this.props.colors.shift([0]).left, 
+                curPill2C: this.props.colors.shift([0]).right
+            })
+
+            board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
+            board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
 
             this.setState({
                 curPill1X: 3,
@@ -94,8 +100,9 @@ class Game extends React.Component {
                 curPill2Y: this.state.curPill2Y + 1
             });
 
-            board[this.state.curPill1Y][this.state.curPill1X] = 1;
-            board[this.state.curPill2Y][this.state.curPill2X] = 2;
+            board[this.state.curPill1Y][this.state.curPill1X] = this.state.curPill1C;
+            board[this.state.curPill2Y][this.state.curPill2X] = this.state.curPill2C;
+
             this.checkCollisionWithPills(this.state);
             
             // this.sendPlayerChange();
@@ -173,7 +180,7 @@ class Game extends React.Component {
             curCount = 0;
             curColor = 0;
             for(let j =0; j< curRow.length; j++) {
-                if(curRow[j] != 0) {
+                if(curRow[j] !== 0) {
                     if(curCount === 0) {
                         if(curRow[j] === 4) {
                             //set to red
@@ -263,10 +270,10 @@ class Game extends React.Component {
             
             let pills = this.state.pills;
             let pillFalling = this.state.pillFalling;
-        for(let i =0; i < 8; i++) {
+        for ( let i =0; i < 8; i++) {
             curCount = 0;
             curColor = 0;
-                for( let j = 0; j< this.state.board.length ;j++) {
+                for( let j = 0; j < this.state.board.length ;j++) {
                     if(this.state.board[j][i] !== 0) {
                         if(curCount === 0) {
                             if(this.state.board[j][i] === 4) {
@@ -365,6 +372,7 @@ class Game extends React.Component {
 
         if (this.state.curPill1Y === 19 || this.state.curPill2Y === 19 || (this.state.board[this.state.curPill1Y + 1][this.state.curPill1X] !== 0) || 
             (this.state.board[this.state.curPill2Y + 1][this.state.curPill2X] !== 0)) {
+                // debugger 
                 pills.push({x:this.state.curPill1X, y:this.state.curPill1Y,color:this.state.curPill1C})
                 pills.push({x:this.state.curPill2X, y:this.state.curPill2Y, color:this.state.curPill2C})
                 pillFalling = false;
@@ -446,46 +454,63 @@ class Game extends React.Component {
         let board = this.state.board; 
         let pillOrientation1 = this.state.curPill10; 
         let pillOrientation2 = this.state.curPill20; 
+        let style={background: "orange"}
 
         for (let row = 0; row < 20; row ++) {
             for (let col = 0; col < 8; col ++) {
                 if (board[row][col] === 0 ) {
                     rows.push(<div></div>)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'HL') { //* BLUE LEFT
-                    rows.push(<img className="pixel" src="b-left.png" alt="" />)
+                if (board[row][col] === 1 ) { //* BLUE LEFT
+                    // rows.push(<img className="pixel" src="b-left.png" alt="" />)
+                    rows.push(<div className="pixel pill blue"/>)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'HR') { //* BLUE RIGHT
-                    rows.push(<img className="pixel" src="b-right.png" alt="" />)
+               
+                if (board[row][col] === 2) { //* YELLOW LEFT
+                    // rows.push(<img className="pixel" src="y-left.png" alt="" />)
+                    rows.push(<div className="pixel pill yellow" />)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'VU') { //* BLUE UP
-                    rows.push(<img className="pixel" src="b-up.png" alt="" />)
+                
+                if (board[row][col] === 3 && pillOrientation2) { //* RED LEFT
+                    // rows.push(<img className="pixel" src="r-left.png" alt="" />)
+                    rows.push(<div className="pixel pill red" />)
                 }
-                if (board[row][col] === 1 && pillOrientation1 === 'VD') { //* BLUE DOWN
-                    rows.push(<img className="pixel" src="b-down.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'HL') { //* YELLOW LEFT
-                    rows.push(<img className="pixel" src="y-left.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'HR') { //* YELLOW LEFT
-                    rows.push(<img className="pixel" src="y-right.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'VU') { //* YELLOW UP
-                    rows.push(<img className="pixel" src="y-up.png" alt="" />)
-                }
-                if (board[row][col] === 2 && pillOrientation2 === 'VD') { //* YELLOW DOWN
-                    rows.push(<img className="pixel" src="y-down.png" alt="" />)
-                }
-
                   
                 if (this.state.board[row][col] === 4) {
-                    rows.push(<img className="pixel" src="r-virus.png" alt="" />)
+                    // rows.push(<img className="pixel" src="r-virus.png" alt="" />)
+                    rows.push(
+                        <div className="pixel virus red red-border">
+                            <div className="eyes">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="mouth"></div>
+                        </div>
+                    )
                 }
                 if (this.state.board[row][col] === 5) {
-                    rows.push(<img className="pixel" src="b-virus.png" alt="" />)
+                    // rows.push(<img className="pixel" src="b-virus.png" alt="" />)
+                    rows.push(
+                        <div className="pixel virus blue blue-border">
+                            <div className="eyes">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="mouth"></div>
+                        </div>
+                    )
                 }
                 if (this.state.board[row][col] === 6) {
-                    rows.push(<img className="pixel" src="y-virus.png" alt="" />)
+                    // rows.push(<img className="pixel" src="y-virus.png" alt="" />)
+                    rows.push(
+                        <div className="pixel virus yellow yellow-border">
+                            <div className="eyes">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            <div className="mouth"></div>
+                        </div>
+                    )
                 }
             }
         }

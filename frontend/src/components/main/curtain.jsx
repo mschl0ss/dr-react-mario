@@ -32,6 +32,7 @@ class Curtain extends React.Component {
     }
 
     startBlankGame() {
+        // debugger;
         this.setState({gameActive: true});
         const randomGame = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
         const randomPlayer = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15).toString();
@@ -44,17 +45,40 @@ class Curtain extends React.Component {
         if (this.props.game.id === "" ) this.props.createGame(gameName, virusLevel, difficulty, playerName);
 
         
-}
+    }
+    
+    renderVirusRow(){
+        const styles = ["pixel virus red red-border", "pixel virus blue blue-border", "pixel virus yellow yellow-border"]
+        const row=[];
+
+        for(let i=0;i<8;i++){
+            row.push(
+                <div className={styles[i%3]}>
+                    <div className="eyes">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div className="mouth"></div>
+                </div>
+            )
+        }
+        
+        
+        return row;
+    }
 
     render() {
         console.log(this.props)
         return (
-            <div>
-                <p>set options on the left and then hit</p>
+            <div className="curtain">
+                <p>set options on the left and then hit the big blue button to begin</p>
 
-                    <button onClick={() => this.startBlankGame()}>start game</button>
+                <div className="virus-row">
+                    {this.renderVirusRow()}
+                </div>
+                    {/* <button onClick={() => this.startBlankGame()}>start game</button> */}
 
-                <p>to begin!</p>
+               
             </div>
         )
     }

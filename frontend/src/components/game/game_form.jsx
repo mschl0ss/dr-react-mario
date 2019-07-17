@@ -10,6 +10,7 @@ class GameForm extends React.Component {
                 players: [],
                 seedValues: []
             },
+            gameActive: false,
             activeTab: 1,
             errors: [],
             createGame: {
@@ -60,6 +61,8 @@ class GameForm extends React.Component {
         if (this.state.gameActive === true && this.props.game.id !== "") {
             this.props.isGameActive(true);
         }
+        if(prevProps.games !== this.props.games) {this.setState({games: this.props.games});}
+        if(prevProps.errors !== this.props.errors) {}
     }
 
     activateTab(tabIndex) {
@@ -79,7 +82,7 @@ class GameForm extends React.Component {
         const playerName = this.state.createGame.playerName.length ? this.state.createGame.playerName : randomPlayer;
  
         this.props.createGame(gameName,virusLevel,difficulty,playerName);
-        this.clearInputs();
+        setTimeout(this.clearInputs(), 1000);
     }
 
     handleCreateSubmit(e) {
@@ -90,7 +93,7 @@ class GameForm extends React.Component {
                 this.state.createGame.virusLevel,
                 this.state.createGame.difficulty,
                 this.state.createGame.playerName)
-        this.clearInputs();
+        setTimeout(this.clearInputs(), 1000);
         this.props.fetchGames();
     }
     handleGetSubmit(e) {
@@ -109,10 +112,10 @@ class GameForm extends React.Component {
     handleDeleteSubmit(e) {
         e.preventDefault();
         this.clearInputs();
-        this.props.isGameActive(false);
         this.props.deleteGame(this.state.game.name);
         this.props.clearGames();
         this.props.fetchGames();
+        this.props.isGameActive(false);
     }
     handleClearSubmit(e) {
         e.preventDefault();
@@ -284,15 +287,19 @@ class GameForm extends React.Component {
                         <div className="text-button">
                         <input type="text" 
                             value={this.state.joinGame.playerName} 
-                            onChange={this.updateJoin('playerName')} />
-                        <input type="submit" 
-                            value="join game" />
+                            onChange={this.updateJoin('playerName')}
+                            />
+                            {this.state.gameActive ? null :<input type="submit" 
+                                value="join game" />}
                         </div>
                     }
 
                 {/* <button onClick={this.handleClearSubmit}>clear game</button> */}
-                <button className="delete"onClick={this.handleDeleteSubmit}>delete game</button>
-                
+                <div className="buttons">
+                    {/* <button className="delete" onClick={() => this.setState({ gameActive: true })}>delete</button> */}
+                    <button className="delete"onClick={this.handleDeleteSubmit}>delete</button>
+                    {this.state.gameActive ? null : <button onClick={this.handleStartSubmit}>start game</button>}
+                </div>
                 </form>
             </div>
         )
@@ -321,7 +328,7 @@ class GameForm extends React.Component {
         const activeTab = this.state.activeTab;
         return (
             <>
-               
+                
                 <ul className={this.props.errors.length ? "errors" : "errors blank"} id="errors">
                     {errors}
                     {this.props.errors.length ? <button 

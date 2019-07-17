@@ -7,7 +7,7 @@
 }
 
 aside.main-left {
-    
+    position: relative;
 }
 
 
@@ -17,7 +17,11 @@ aside.main-left {
 /* ---------------- */
 
 .main-left > h3 {
-    margin-bottom: 0;
+    /* margin-bottom: 0; */
+    font-family: 'Fira Sans';
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 /* ---ERRORS */
 .main-left .errors {
@@ -31,7 +35,7 @@ aside.main-left {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    position: relative;
+    position: absolute;
 }
 .main-left .errors button {
     position: absolute;
@@ -49,7 +53,7 @@ aside.main-left {
     background: white;
     border: 1px #cdcdcd solid;
     padding: 10px;
-    margin: 10px 0 20px;
+    margin: 45px 0 20px;
     box-shadow: 5px 10px 18px #888888;
     font-family: 'Fira Sans'
 }
@@ -136,7 +140,7 @@ aside.main-left {
          1px -1px 0 black,
         -1px 1px 0 black,
          1px 1px 0 black;
-    border: solid 1px white;
+    /* border: solid 1px white; */
 }
 
 .main-left form .text-button {
@@ -233,7 +237,9 @@ aside.main-left {
     /* box-shadow: inset 0 0 6px 1px #888888; */
     
 }
+/* ************** */
 /* show-join form */
+/* ************** */
 .main-left .show-join {
     min-height: 250px;
 }
@@ -242,15 +248,27 @@ aside.main-left {
     margin-bottom: 15px;
 }
 .main-left .show-join button {
-    background: #feef00;
-    text-shadow: 
+    background: #1d53f4;
+    border-radius: 0px;
+    /* text-shadow: 
         -1px -1px 0 #888888,
          1px -1px 0 #888888,
         -1px 1px 0 #888888,
-         1px 1px 0 #888888;
+         1px 1px 0 #888888; */
 }
 .main-left .show-join button.delete {
+    width: 30%;
+    margin-right: 5%;
     background: #E50301;
+    text-shadow: none;
+}
+
+.main-left .show-join button.delete:hover {
+    text-shadow: 
+        -1px -1px 0 black,
+         1px -1px 0 black,
+        -1px 1px 0 black,
+         1px 1px 0 black;
 }
 
 

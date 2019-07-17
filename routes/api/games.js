@@ -4,6 +4,7 @@ const router  = express.Router();
 const Game = require('../../models/Game');
 
 const Prando = require('prando');
+const seedCount = 2000;
 
 // debugger;
 
@@ -49,35 +50,30 @@ function generateInitialState(virusLevel) {
     }
 
     //now we combine and shuffle the blank and virus arrays
-    const allSquares = virusSquares.concat(blankSquares);
-    const shuffledSquares = shuffle(allSquares);
 
-    const usedPicks = [];
+    const topIsBlank = blankSquares.slice(0,65);
+    const bottomHasViruses = shuffle(virusSquares.concat(blankSquares.slice(65)))
+    const shuffledSquares = topIsBlank.concat(bottomHasViruses);
+
     const board = [];
 
     
     //k cool `shuffledSquares` is an array of the exact length and population
     //that we want for our board.  Now let's just loop around, create rows,
     //and add those rows to the board
+
     for (let row = 0; row < 20; row++) {
         const thisCol = [];
         for (let col = 0; col < 8; col++) {
 
-            let pick = Math.floor(Math.random() * 16);
-            while (usedPicks.includes(pick)) {
-                pick = Math.floor(Math.random() * 160);
+            thisCol.push(shuffledSquares.shift());
 
-            }
-            if (!shuffledSquares[pick]) {
-            }
-            usedPicks.push(pick);
-            thisCol.push(shuffledSquares[pick]);
         }
+        
         board.push(thisCol);
     }
 
     // word.
-    console.log(board.length)
     return board;
      
 }
@@ -86,7 +82,7 @@ router.get('/all', (req,res) => {
         const theGames = games.map(game => {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 30; i++) seedValues.push(rng.nextInt(0, 30));
+            for (let i = 0; i < seedCount; i++) seedValues.push(rng.nextInt(0, 9));
             
             return {
                 name: game.name,
@@ -113,7 +109,7 @@ router.get('/', (req, res) => {
         if(game) {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
+            for (let i = 0; i < 5; i++) seedValues.push(rng.nextInt(0, 9));
             res.json({
                 name: game.name,
                 id: game.id,
@@ -146,7 +142,7 @@ router.post('/', (req,res) => {
         .then(game => {
             let rng = new Prando(game.id);
             const seedValues = [];
-            for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
+            for (let i = 0; i < seedCount; i++) seedValues.push(rng.nextInt(0, 9));
             res.json({
                 name: game.name,
                 id: game.id,
@@ -178,7 +174,7 @@ router.patch('/', (req,res) => {
                 .then(game=>{
                     let rng = new Prando(game.id);
                     const seedValues = [];
-                    for (let i = 0; i < 100; i++) seedValues.push(rng.nextInt(0, 9));
+                    for (let i = 0; i < seedCount; i++) seedValues.push(rng.nextInt(0, 9));
                     res.json({
                         name: game.name,
                         id: game.id,
