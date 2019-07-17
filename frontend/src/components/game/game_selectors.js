@@ -1,4 +1,5 @@
 export const extractBoard = state => {
+    if (state.game.initialState.length === 0 ) return [];
     let board = [];
     for(let i = 0; i < 20; i++) {
         let row = [];
