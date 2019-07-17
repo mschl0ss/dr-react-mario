@@ -52,11 +52,15 @@
 
 .mouth {
     width: 60%;
-    height: 6px;
+    height: 8px;
     background: black;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
     margin: 3px 0;
+}
+
+.red .mouth {
+    border-radius: 0 0 5px 5px;
 }
 .eyes div{
     /* border-style: solid; */
@@ -81,8 +85,9 @@
 .blue {background:#3F52F4}
 .blue-border {border-color:#1d53f4}
 .blue .eyes div {background: #F8EF18}
-.virus.blue {border-radius: 20px 20px 30px 30px; box-shadow: inset 0px 0px 9px 0px #bcb638;}
+.virus.blue {border-radius: 30px 30px 50px 50px; box-shadow: inset 0px 0px 9px 0px #bcb638;}
 .virus.blue .mouth {width: 40%;}
+
 .yellow{background:#feef00}
 .yellow-border{border-color:#feef00}
 .yellow .eyes div {background: #52A6FE;}
